@@ -1,0 +1,12 @@
+Steps to run the server
+
+1. Install Python
+2. Install flask [ command = "pip install flask" ]
+3. Open cmd -> navigate to flaskMiddleWare folder and run,
+      - set FLASK_APP=flaskMiddleWare.py
+4. Run the server by the below command
+	- flask run
+	OR
+	- python -m flask run
+5. call service by pointing to 127.0.0.1:5000 in local machine and call 
+	127.0.0.1:5000/upload POST method with the file
