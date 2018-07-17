@@ -1,3 +1,4 @@
+import axios from 'axios';
 import * as React from 'react';
 import downloadBlob from './downloadBlob';
 import WAVEInterface from './waveInterface';
@@ -104,6 +105,14 @@ export default class AudioRecorder extends React.Component<IAudioRecorderProps, 
         audioData: this.waveInterface.audioData
       });
     }
+    const formData = new FormData();
+    formData.append('name', 'recordedAudio');
+    formData.append('file', this.waveInterface.audioData);
+
+    axios.post('http://localhost/speech/save_audio.php', formData,
+    ).then((res) => {
+      console.log(res);
+    })
   }
 
   public startPlayback() {

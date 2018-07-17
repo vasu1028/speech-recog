@@ -8,6 +8,7 @@
   },
   "rules": {
     "object-literal-sort-keys": false,
-    "import-sources-order": "any"
+    "import-sources-order": "any",
+    "no-console": [false, "log", "error"]
   }
 }
