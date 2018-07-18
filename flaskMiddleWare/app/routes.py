@@ -1,20 +1,24 @@
 from app import app
 import os
-from flask import Flask, flash, request, redirect, url_for, abort
+from flask import Flask, flash, request, redirect, url_for, abort, jsonify
 from werkzeug.utils import secure_filename
+from pymongo import MongoClient
+from bson import json_util, ObjectId
 
+client = MongoClient()
 UPLOAD_FOLDER = './uploads'
 ALLOWED_EXTENSIONS = set(['wav'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+db = client.speechDatabase
+collection = db.recordings
 
 def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-
 @app.route('/')
 def index():
-    return "Uploader initiated"
+    return 'app initiating...'
 
 @app.route('/test', methods=['GET', 'POST'])
 def test():
@@ -46,3 +50,24 @@ def upload_file():
       <input type=submit value=upload>
     </form>
     '''
+
+# **********************
+# Mongo DB connection api's
+# **********************
+
+def prepareResponse(data):
+    res = { 'result': data }
+    return json_util.dumps(res)
+
+@app.route('/retrieve', methods=['GET', 'POST'])
+def retrieve():
+    data = collection.find()
+    return prepareResponse(data)
+    
+
+@app.route('/insert', methods=['POST'])
+def insert():
+   newCollectionId = collection.insert_one(request.json)
+   newData = collection.find_one({'_id': newCollectionId.inserted_id})
+   return prepareResponse(newData)
+
