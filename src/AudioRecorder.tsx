@@ -1,7 +1,9 @@
 import axios from 'axios';
 import * as React from 'react';
-// import downloadBlob from './downloadBlob';
 import WAVEInterface from './waveInterface';
+
+import App from './App'
+import Uploader from './Uploader'
 
 /* interface IAudioRecorderChangeEvent {
   duration: number,
@@ -28,6 +30,7 @@ interface IAudioRecorderProps {
   recordingLabel?: string,
   removeLabel?: string,
   downloadLabel?: string,
+  uploadForm?: string
 };
 
 interface IAudioRecorderState {
@@ -36,8 +39,9 @@ interface IAudioRecorderState {
   audioData?: Blob | null
 };
 
-export default class AudioRecorder extends React.Component<IAudioRecorderProps, IAudioRecorderState> {
 
+export default class AudioRecorder extends React.Component<IAudioRecorderProps, IAudioRecorderState> {
+  
   public static defaultProps = {
     loop: false,
     downloadable: true,
@@ -49,7 +53,8 @@ export default class AudioRecorder extends React.Component<IAudioRecorderProps, 
     recordLabel: '● Record',
     recordingLabel: '● Recording',
     removeLabel: '✖ Remove',
-    downloadLabel: '\ud83d\udcbe Save' // unicode floppy disk
+    downloadLabel: '\ud83d\udcbe Save', // unicode floppy disk,
+    uploadForm: ''
   };
 
   public waveInterface = new WAVEInterface();
@@ -89,6 +94,7 @@ export default class AudioRecorder extends React.Component<IAudioRecorderProps, 
           if (this.props.onRecordStart) { this.props.onRecordStart(); }
         })
         .catch((err) => { throw err; });
+      this.getUploadForm();
     }
   }
 
@@ -148,8 +154,14 @@ export default class AudioRecorder extends React.Component<IAudioRecorderProps, 
     const data = new FormData();
     const settings = { headers: { 'content-type': 'multipart/form-data' } };
     data.append('file', this.waveInterface.audioData, this.state.filename);
-    axios.post('http://127.0.0.1:5000/upload', data, settings).then((res) => {
-      console.log(res);
+    axios.post(App.uploadUrl, data, settings).then((res) => {
+      return 'upload success'
+    })
+  }
+
+  public getUploadForm = () => {
+    axios.get(App.uploadUrl).then((res) => {
+      this.state.uploadForm = {__html: res.data};
     })
   }
 
@@ -172,39 +184,42 @@ export default class AudioRecorder extends React.Component<IAudioRecorderProps, 
 
   public render() {
     return (
-      <div className="AudioRecorder">
-        <button
-          className={
-            [
-              'AudioRecorder-button',
-              this.state.audioData ? 'hasAudio' : '',
-              this.state.isPlaying ? 'isPlaying' : '',
-              this.state.isRecording ? 'isRecording' : '',
-            ].join(' ')
+      <div>
+        <div className="AudioRecorder">
+          <button
+            className={
+              [
+                'AudioRecorder-button',
+                this.state.audioData ? 'hasAudio' : '',
+                this.state.isPlaying ? 'isPlaying' : '',
+                this.state.isRecording ? 'isRecording' : '',
+              ].join(' ')
+            }
+            onClick={this.onButtonClick}
+          >
+            {this.state.audioData && !this.state.isPlaying && this.props.playLabel}
+            {this.state.audioData && this.state.isPlaying && this.props.playingLabel}
+            {!this.state.audioData && !this.state.isRecording && this.props.recordLabel}
+            {!this.state.audioData && this.state.isRecording && this.props.recordingLabel}
+          </button>
+          {this.state.audioData &&
+            <button
+              className="AudioRecorder-remove"
+              onClick={this.onRemoveClick}
+            >
+              {this.props.removeLabel}
+            </button>
           }
-          onClick={this.onButtonClick}
-        >
-          {this.state.audioData && !this.state.isPlaying && this.props.playLabel}
-          {this.state.audioData && this.state.isPlaying && this.props.playingLabel}
-          {!this.state.audioData && !this.state.isRecording && this.props.recordLabel}
-          {!this.state.audioData && this.state.isRecording && this.props.recordingLabel}
-        </button>
-        {this.state.audioData &&
-          <button
-            className="AudioRecorder-remove"
-            onClick={this.onRemoveClick}
-          >
-            {this.props.removeLabel}
-          </button>
-        }
-        {this.state.audioData && this.props.downloadable &&
-          <button
-            className="AudioRecorder-download"
-            onClick={this.onDownloadClick}
-          >
-            {this.props.downloadLabel}
-          </button>
-        }
+          {this.state.audioData && this.props.downloadable &&
+            <button
+              className="AudioRecorder-download"
+              onClick={this.onDownloadClick}
+            >
+              {this.props.downloadLabel}
+            </button>
+          }
+        </div>
+        <Uploader/>
       </div>
     );
   }
@@ -218,5 +233,5 @@ export default class AudioRecorder extends React.Component<IAudioRecorderProps, 
     const m = today.getMinutes();
     const s = today.getSeconds();
     return y + "-" + mt + "-" + d + "-" + h + "-" + m + "-" + s;
-}
+  }
 }

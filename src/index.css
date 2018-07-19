@@ -13,11 +13,22 @@ body {
   align-items: center;
 }
 
-.AudioRecorder button {
+.AudioRecorder button, div.index button[type='submit'] {
   margin-right: 15px;
   padding: 10px 25px 10px 25px;
   border-radius: 5px;
   background-color: cadetblue;
   color: antiquewhite;
   font-size: 16px;
+}
+
+div.index {
+  text-align: center;
+  padding-top: 5%;
+  border-top: 1px dotted gray;
+}
+
+div.index h1 {
+  font-size: medium;
+  color: darkgrey;
 }
