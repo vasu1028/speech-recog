@@ -1,12 +1,14 @@
-from app import app
+from app import app, mongo
 import os
 from flask import Flask, flash, request, redirect, url_for, abort, jsonify
 from werkzeug.utils import secure_filename
 from pymongo import MongoClient
-from bson import json_util, ObjectId
+from bson import json_util, ObjectId, Binary
+from datetime import datetime
 
 client = MongoClient()
-UPLOAD_FOLDER = './uploads'
+folderName = 'uploads'
+UPLOAD_FOLDER = './' + folderName
 ALLOWED_EXTENSIONS = set(['wav'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 db = client.speechDatabase
@@ -37,9 +39,10 @@ def upload_file():
         if file.filename == '':
             flash('No selected file')
             return redirect(request.url)
-        if file and allowed_file(file.filename):
+        if file and allowed_file(file.filename) and not mongo.existInDatabase(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            mongo.pushToDatabase(filename)
             return redirect(url_for('upload_file', filename=filename))
     return '''
     <!doctype html>
@@ -50,24 +53,3 @@ def upload_file():
       <input type=submit value=upload>
     </form>
     '''
-
-# **********************
-# Mongo DB connection api's
-# **********************
-
-def prepareResponse(data):
-    res = { 'result': data }
-    return json_util.dumps(res)
-
-@app.route('/retrieve', methods=['GET', 'POST'])
-def retrieve():
-    data = collection.find()
-    return prepareResponse(data)
-    
-
-@app.route('/insert', methods=['POST'])
-def insert():
-   newCollectionId = collection.insert_one(request.json)
-   newData = collection.find_one({'_id': newCollectionId.inserted_id})
-   return prepareResponse(newData)
-

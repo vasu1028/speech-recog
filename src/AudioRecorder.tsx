@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as React from 'react';
-import downloadBlob from './downloadBlob';
+// import downloadBlob from './downloadBlob';
 import WAVEInterface from './waveInterface';
 
 /* interface IAudioRecorderChangeEvent {
@@ -58,6 +58,7 @@ export default class AudioRecorder extends React.Component<IAudioRecorderProps, 
     audioData: this.props.initialAudio,
     isPlaying: false,
     isRecording: false,
+    fileName: ''
   };
 
   public componentWillReceiveProps(nextProps: any) {
@@ -93,7 +94,6 @@ export default class AudioRecorder extends React.Component<IAudioRecorderProps, 
 
   public stopRecording() {
     this.waveInterface.stopRecording();
-
     this.setState({
       isRecording: false,
       audioData: this.waveInterface.audioData
@@ -108,11 +108,7 @@ export default class AudioRecorder extends React.Component<IAudioRecorderProps, 
     const formData = new FormData();
     formData.append('name', 'recordedAudio');
     formData.append('file', this.waveInterface.audioData);
-
-    axios.post('http://localhost/speech/save_audio.php', formData,
-    ).then((res) => {
-      console.log(res);
-    })
+    this.state.filename = 'speech-' + this.getFormattedTime() + '.wav';
   }
 
   public startPlayback() {
@@ -145,7 +141,17 @@ export default class AudioRecorder extends React.Component<IAudioRecorderProps, 
     });
   };
 
-  public onDownloadClick = () => downloadBlob(this.state.audioData, this.props.filename);
+  public onDownloadClick = () => {
+    /**
+     * code to upload file to server
+     */
+    const data = new FormData();
+    const settings = { headers: { 'content-type': 'multipart/form-data' } };
+    data.append('file', this.waveInterface.audioData, this.state.filename);
+    axios.post('http://127.0.0.1:5000/upload', data, settings).then((res) => {
+      console.log(res);
+    })
+  }
 
   public onButtonClick = (event: React.SyntheticEvent<HTMLButtonElement>) => {
     if (this.state.audioData) {
@@ -202,4 +208,15 @@ export default class AudioRecorder extends React.Component<IAudioRecorderProps, 
       </div>
     );
   }
+
+  public getFormattedTime() {
+    const today = new Date();
+    const y = today.getFullYear();
+    const mt = today.getMonth();
+    const d = today.getDate();
+    const h = today.getHours();
+    const m = today.getMinutes();
+    const s = today.getSeconds();
+    return y + "-" + mt + "-" + d + "-" + h + "-" + m + "-" + s;
+}
 }
