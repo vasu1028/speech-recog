@@ -1,4 +1,4 @@
-from app import app, routes
+from app import app, routes, transcribe
 import os
 from flask import Flask, flash, request, redirect, url_for, abort, jsonify
 from werkzeug.utils import secure_filename
@@ -29,11 +29,14 @@ def insert():
    return prepareResponse(newData)
 
 def pushToDatabase(fileName):
+    absolutePath = os.path.abspath(os.path.join(app.config['UPLOAD_FOLDER'], fileName))
+    text = transcribe.transcribe_file(absolutePath)
     obj = {
         'fileName': fileName,
-        'absolutePath': os.path.abspath(os.path.join(app.config['UPLOAD_FOLDER'], fileName)),
+        'absolutePath': absolutePath,
         'timeStamp': datetime.now().strftime("%Y%m%d-%H%M%S"),
-        'type': 'audio/wav'
+        'type': 'audio/wav',
+        'text': text
     }
     newCollectionId = routes.collection.insert_one(obj)
     newData = routes.collection.find_one({'_id': newCollectionId.inserted_id})

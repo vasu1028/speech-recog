@@ -11,6 +11,9 @@ folderName = 'uploads'
 UPLOAD_FOLDER = './' + folderName
 ALLOWED_EXTENSIONS = set(['wav'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+# connection = Connection()
+# db = connection['speechDatabase']
+# collection = db['recordings']
 db = client.speechDatabase
 collection = db.recordings
 

@@ -1,6 +1,34 @@
+Method 1:
+
+1. Install Python
+	if environment variables are not set, set the path in user variables
+	- C:\Users\kibose\AppData\Local\Programs\Python\Python36\
+	- C:\Users\kibose\AppData\Local\Programs\Python\Python36\scripts
+
+Important path -> .\external_modules\libav-x86\usr\bin"
+	- C:\codebase\FI\speech-recog\flaskMiddleWare\external_modules\libav-x86\usr\bin
+	python36 folderName will differ for systems
+
+2. INSTALL MONGODB
+https://www.mongodb.com/download-center?jmp=nav#enterprise
+Configure Database and create collections. Start mongodb server from mongodbCompass
+
+3. right click "initialize.ps1" and select run with powershell
+4. Open cmd in flaskMiddleWareFolder: "flask run"
+5. Open another cmd: go one folder up: "npm start"
+
+
+
+Method 2:
 Steps to run the server
 
 1. Install Python
+	if environment variables are not set, set the path in user variables
+	- C:\Users\kibose\AppData\Local\Programs\Python\Python36\
+	- C:\Users\kibose\AppData\Local\Programs\Python\Python36\scripts
+
+	python36 folderName will differ for systems
+
 2. Install flask [ command = "pip install flask" ]
 3. Install PyMongo. Client to connect to mongodb (command = "pip install Flask-PyMongo")
 4. Open cmd -> navigate to flaskMiddleWare folder and run,
@@ -18,3 +46,18 @@ For debugging and watching changes ,
 INSTALL MONGODB
 https://www.mongodb.com/download-center?jmp=nav#enterprise
 Configure Database and create collections
+
+
+
+
+NOTES:
+SETTING UP GOOGLE CLOUD ACCOUNT (Not needed- Just for notes) 
+
+	https://cloud.google.com/docs/authentication/getting-started
+	Download json with credentials after creating a service account
+
+	Go to cmd and 
+		set GOOGLE_APPLICATION_CREDENTIALS=[PATH]
+
+
+
