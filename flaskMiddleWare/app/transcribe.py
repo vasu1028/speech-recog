@@ -18,7 +18,7 @@
 processing.
 
 Example usage:
-    python transcribe.py resources/audio.raw
+    python transcribe.py resources/audio.wav
     python transcribe.py gs://cloud-samples-tests/speech/brooklyn.flac
 """
 
