@@ -32,6 +32,7 @@ export default class WAVEInterface {
             const channel = event.inputBuffer.getChannelData(i);
             this.buffers[i].push(new Float32Array(channel));
           }
+          console.log(audioContext, new Date());
         };
 
         recSourceNode.connect(recGainNode);
