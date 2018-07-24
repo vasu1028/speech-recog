@@ -45,8 +45,8 @@ def upload_file():
         if file and allowed_file(file.filename) and not mongo.existInDatabase(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            mongo.pushToDatabase(filename)
-            return redirect(url_for('upload_file', filename=filename))
+            response = mongo.pushToDatabase(filename)
+            return mongo.prepareResponse(response)
     return '''
     <!doctype html>
     <title>Upload new File</title>

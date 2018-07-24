@@ -51,7 +51,7 @@ def transcribe_file(speech_file):
     audio = types.cloud_speech_pb2.RecognitionAudio(content=content)
     config = types.cloud_speech_pb2.RecognitionConfig(
         encoding=enums.RecognitionConfig.AudioEncoding.LINEAR16,
-        language_code='en-US')
+        language_code='en-IN')
     # [END migration_audio_config_file]
 
     # [START migration_sync_response]
@@ -62,8 +62,9 @@ def transcribe_file(speech_file):
     text = ''
     for result in response.results:
         # The first alternative is the most likely one for this portion.
-        text += u'Transcript: {}'.format(result.alternatives[0].transcript)
-        print(u'Transcript: {}'.format(result.alternatives[0].transcript))
+        text += u'{}'.format(result.alternatives[0].transcript)
+        if(len(result.alternatives) > 0):
+            text += ' '
     # [END migration_sync_response]
     return text
 # [END def_transcribe_file]

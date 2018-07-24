@@ -17,7 +17,7 @@ class Uploader extends React.Component {
   constructor(props: FileList) {
     super(props);
     this.state = {
-      file: null
+      file: ''
     }
     this.onFormSubmit = this.onFormSubmit.bind(this)
     this.onChange = this.onChange.bind(this)
@@ -28,7 +28,8 @@ class Uploader extends React.Component {
   public onFormSubmit(e: any){
     e.preventDefault() // Stop form submit
     this.fileUpload(this.state.file).then((response: any)=>{
-      console.log(response.data);
+      this.setState({ file: '' });
+      return 'File Uploaded';
     })
   }
 
@@ -54,7 +55,7 @@ class Uploader extends React.Component {
       <div className="index">
           <form onSubmit={ this.onFormSubmit }>
             <h1>File Upload</h1>
-            <input type="file" onChange={ this.onChange } />
+            <input value={ this.state.file } type="file" onChange={ this.onChange } />
             <button type="submit">Upload</button>
         </form>
       </div>
