@@ -20,6 +20,7 @@ semantic.json
 *.css.map
 flaskMiddleWare/uploads/
 flaskMiddleWare/.vscode
+flaskMiddleWare/d-speech-6ef072e889ea.json
 
 
 # Compiled source #

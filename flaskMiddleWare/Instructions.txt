@@ -4,10 +4,8 @@ Method 1:
 	if environment variables are not set, set the path in user variables
 	- C:\Users\kibose\AppData\Local\Programs\Python\Python36\
 	- C:\Users\kibose\AppData\Local\Programs\Python\Python36\scripts
-
-Important path -> .\external_modules\libav-x86\usr\bin"
-	- C:\codebase\FI\speech-recog\flaskMiddleWare\external_modules\libav-x86\usr\bin
 	python36 folderName will differ for systems
+	Download the d-speech-6ef072e889ea.json file shared by email and paste it in flaskmiddleware folder
 
 2. INSTALL MONGODB
 https://www.mongodb.com/download-center?jmp=nav#enterprise
