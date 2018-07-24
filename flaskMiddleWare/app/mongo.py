@@ -30,13 +30,19 @@ def insert():
 
 def pushToDatabase(fileName):
     absolutePath = os.path.abspath(os.path.join(app.config['UPLOAD_FOLDER'], fileName))
-    text = transcribe.transcribe_file(absolutePath)
+    response = transcribe.transcribe_file(absolutePath)
+    duration = response[0]
+    text = response[1]
+    monoFilePath = fileName.split('.')[0] + '__mono.wav'
+    monoAbsolutePath = os.path.abspath(os.path.join(app.config['UPLOAD_FOLDER'], monoFilePath))
     obj = {
         'fileName': fileName,
-        'absolutePath': absolutePath,
+        'stereoFilePath': absolutePath,
+        'monoFilePath': monoAbsolutePath,
+        'duration_milliseconds': duration,
+        'text': text,
         'timeStamp': datetime.now().strftime("%Y%m%d-%H%M%S"),
-        'type': 'audio/wav',
-        'text': text
+        'type': 'audio/wav'
     }
     newCollectionId = routes.collection.insert_one(obj)
     newData = routes.collection.find_one({'_id': newCollectionId.inserted_id})

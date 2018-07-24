@@ -17,13 +17,13 @@ body {
   margin-right: 15px;
   padding: 10px 25px 10px 25px;
   border-radius: 5px;
-  background-color: cadetblue;
+  background-color: #3c8dbc;
   color: antiquewhite;
   font-size: 16px;
 }
 
 .AudioRecorder-button:not(.hasAudio) {
-  color: #d80909;
+  color: darkred;
 }
 
 div.index {

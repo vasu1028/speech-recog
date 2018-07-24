@@ -6,8 +6,8 @@ import Sidebar from './sidebar/sidebar';
 
 export class App extends React.Component<any,any> {
 
-  public static url = 'http://localhost/speech/';
-  public static uploadUrl = App.url + 'save_audio.php';
+  public static url = 'http://127.0.0.1:5000/';
+  public static uploadUrl = App.url + 'upload';
   
   public render() {
     return (

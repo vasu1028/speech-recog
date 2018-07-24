@@ -4,20 +4,21 @@ import './index.css'
 
 import * as React from 'react';
 
-
 class Uploader extends React.Component {
 
   public innerHtml: { __html: string } = { __html: '' }
   
   
   public state: any = {
-    file: FileList
+    file: FileList,
+    timeStamp: ''
   };
 
   constructor(props: FileList) {
     super(props);
     this.state = {
-      file: ''
+      file: '',
+      timeStamp: new Date()
     }
     this.onFormSubmit = this.onFormSubmit.bind(this)
     this.onChange = this.onChange.bind(this)
@@ -27,10 +28,12 @@ class Uploader extends React.Component {
 
   public onFormSubmit(e: any){
     e.preventDefault() // Stop form submit
-    this.fileUpload(this.state.file).then((response: any)=>{
-      this.setState({ file: '' });
-      return 'File Uploaded';
-    })
+    if (this.state.file) {
+      this.fileUpload(this.state.file).then((response: any) => {
+        this.setState({ file: '', timeStamp: new Date() }); // to reset the upload file input
+        return 'File Uploaded'
+      })
+    }
   }
 
   public onChange(e: any) {
@@ -46,6 +49,7 @@ class Uploader extends React.Component {
         }
     }
     return axios.post(App.uploadUrl, formData, config).then((res) => {
+      // document.getElementById('fileInput').value = '';
       return 'upload success'
     })
   }
@@ -55,7 +59,7 @@ class Uploader extends React.Component {
       <div className="index">
           <form onSubmit={ this.onFormSubmit }>
             <h1>File Upload</h1>
-            <input value={ this.state.file } type="file" onChange={ this.onChange } />
+            <input id="fileInput" type="file" onChange={ this.onChange } key={ this.state.timeStamp }/>
             <button type="submit">Upload</button>
         </form>
       </div>

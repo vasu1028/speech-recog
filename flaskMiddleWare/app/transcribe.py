@@ -36,16 +36,18 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./d-speech-6ef072e889ea.json"
 # [START def_transcribe_file]
 def transcribe_file(speech_file):
     """Convert given audio file to single channel."""
+    monoFileName = speech_file.split('.')[0] + '__mono.wav'
     sound = AudioSegment.from_wav(speech_file)
     sound = sound.set_channels(1)
-    sound.export(speech_file, format="wav")
+    duration_in_milliseconds = len(sound)
+    sound.export(monoFileName, format='wav')
     
     """Transcribe the given audio file."""
     client = speech.SpeechClient()
 
     # [START migration_sync_request]
     # [START migration_audio_config_file]
-    with io.open(speech_file, 'rb') as audio_file:
+    with io.open(monoFileName, 'rb') as audio_file:
         content = audio_file.read()
 
     audio = types.cloud_speech_pb2.RecognitionAudio(content=content)
@@ -66,7 +68,7 @@ def transcribe_file(speech_file):
         if(len(result.alternatives) > 0):
             text += ' '
     # [END migration_sync_response]
-    return text
+    return [duration_in_milliseconds, text]
 # [END def_transcribe_file]
 
 
