@@ -35,6 +35,7 @@ def pushToDatabase(fileName):
     text = response[1]
     monoFilePath = fileName.split('.')[0] + '__mono.wav'
     monoAbsolutePath = os.path.abspath(os.path.join(app.config['UPLOAD_FOLDER'], monoFilePath))
+    dateTime = datetime.now().strftime("%Y-%m-%dT%H:%M:%S.000Z")
     obj = {
         'fileName': fileName,
         'stereoFilePath': absolutePath,
@@ -42,6 +43,7 @@ def pushToDatabase(fileName):
         'duration_milliseconds': duration,
         'text': text,
         'timeStamp': datetime.now().strftime("%Y%m%d-%H%M%S"),
+        'ISOdate': datetime.strptime(dateTime, "%Y-%m-%dT%H:%M:%S.000Z"),
         'type': 'audio/wav'
     }
     newCollectionId = routes.collection.insert_one(obj)
