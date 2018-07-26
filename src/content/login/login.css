@@ -1,0 +1,15 @@
+.col-centered {
+    float: none;
+    margin: 0 auto;
+    background-color: #fff;
+    width: 95%;
+    min-height: 350px;
+}
+
+.page-header {
+    color: brown;
+}
+
+.form-horizontal {
+    margin-top: 50px;
+}
