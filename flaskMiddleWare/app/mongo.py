@@ -43,6 +43,8 @@ def pushToDatabase(fileName):
         'duration_milliseconds': duration,
         'text': text,
         'timeStamp': datetime.now().strftime("%Y%m%d-%H%M%S"),
+        'date': datetime.now().strftime("%d/%m/%Y"),
+        'time': datetime.now().strftime("%H:%M:%S"),
         'ISOdate': datetime.strptime(dateTime, "%Y-%m-%dT%H:%M:%S.000Z"),
         'type': 'audio/wav'
     }

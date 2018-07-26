@@ -1,6 +1,6 @@
 from app import app, mongo
 import os
-from flask import Flask, flash, request, redirect, url_for, abort, jsonify
+from flask import Flask, flash, request, redirect, url_for, abort, jsonify, session
 from werkzeug.utils import secure_filename
 from pymongo import MongoClient
 from bson import json_util, ObjectId, Binary
@@ -11,9 +11,6 @@ folderName = 'uploads'
 UPLOAD_FOLDER = './' + folderName
 ALLOWED_EXTENSIONS = set(['wav'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-# connection = Connection()
-# db = connection['speechDatabase']
-# collection = db['recordings']
 db = client.speechDatabase
 collection = db.recordings
 
@@ -23,11 +20,9 @@ def allowed_file(filename):
 
 @app.route('/')
 def index():
-    return 'app initiating...'
-
-@app.route('/test', methods=['GET', 'POST'])
-def test():
-    return __name__
+    if 'username' in session:
+        return 'You are logged in as ' + session['username']
+    return redirect('/', code=404)
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():

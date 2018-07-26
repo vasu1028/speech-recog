@@ -1,6 +1,8 @@
 pip install flask
 pip install Flask-PyMongo
 pip install pydub
+pip install bcrypt
+
 set FLASK_APP=flaskMiddleWare.py
 set FLASK_DEBUG=true
 
