@@ -1,10 +1,11 @@
-from app import app, mongo
+from app import app, mongo, auth
 import os
 from flask import Flask, flash, request, redirect, url_for, abort, jsonify, session
 from werkzeug.utils import secure_filename
 from pymongo import MongoClient
 from bson import json_util, ObjectId, Binary
 from datetime import datetime
+import bcrypt
 
 client = MongoClient()
 folderName = 'uploads'
@@ -12,17 +13,26 @@ UPLOAD_FOLDER = './' + folderName
 ALLOWED_EXTENSIONS = set(['wav'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 db = client.speechDatabase
-collection = db.recordings
+recordingsCollection = db.recordings
+usersCollection = db.users
 
 def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/')
-def index():
-    if 'username' in session:
-        return 'You are logged in as ' + session['username']
-    return redirect('/', code=404)
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    return 'You want path: %s' % path
+
+@app.before_request
+def before_request():
+    if 'email' in session or request.endpoint == 'login' or request.endpoint == 'register':
+        admin = usersCollection.find_one({ 'email': 'admin' })
+        if admin is None :
+            usersCollection.insert_one(adminObj)
+    else:            
+        return redirect('login', code=200)
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
@@ -51,3 +61,18 @@ def upload_file():
       <input type=submit value=upload>
     </form>
     '''
+
+adminObj = {
+    'firstname' : 'admin', 
+    'lastname' : 'admin', 
+    'email' : 'admin',
+    'empid' : '0000',
+    'password' : bcrypt.hashpw('password'.encode('utf-8'), bcrypt.gensalt()),
+    'industry' : 'admin', 
+    'serviceline' : 'admin', 
+    'servicearea' : 'admin', 
+    'designation' : 'admin', 
+    'location' : 'admin', 
+    'mobileno' : 'admin',
+    'permission': 'administrator'
+}

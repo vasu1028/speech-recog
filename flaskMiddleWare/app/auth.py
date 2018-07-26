@@ -1,5 +1,5 @@
-from flask import Flask, session, request, redirect
-from app import app, mongo, routes
+from flask import Flask, session, request, redirect, url_for
+from app import app, mongo, routes, exceptionHandler
 from pymongo import MongoClient
 
 import bcrypt
@@ -8,50 +8,45 @@ import bcrypt
 # User Authentication Protocols
 # ********************************************
 
-app = Flask(__name__)
-
 client = MongoClient()
 db = client.speechDatabase
-collection = db.users
+usersCollection = db.users
 
 @app.route('/login', methods=['POST'])
 def login():
-    users = collection.users
-    login_user = users.find_one({'name' : request.form['username']})
-
+    login_user = usersCollection.find_one({'email' : request.form['email']})
     if login_user:
-        if bcrypt.hashpw(request.form['pass'].encode('utf-8'), login_user['password'].encode('utf-8')) == login_user['password'].encode('utf-8'):
-            session['username'] = request.form['username']
-            return redirect(request.url)
-
-    return 'Invalid username/password combination'
+        if bcrypt.hashpw(request.form['password'].encode('utf-8'), login_user['password']) == login_user['password']:
+            session['email'] = request.form['email']
+            return redirect('/voiceAnalyzer', code=200)
+    
+    raise exceptionHandler.InvalidUsage('Invalid email/password combination', status_code=410)
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     if request.method == 'POST':
-        users = collection.users
-        existing_user = users.find_one({'name' : request.form['username']})
-
+        existing_user = usersCollection.find_one({'email' : request.form['email']})
         if existing_user is None:
-            hashpass = bcrypt.hashpw(request.form['pass'].encode('utf-8'), bcrypt.gensalt())
-            users.insert({
-                'name' : request.form['username'], 
-                'designation' : request.form['designation'], 
-                'serviceLine' : request.form['serviceLine'], 
-                'company' : request.form['company'], 
-                'office' : request.form['office'], 
+            hashpass = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
+            usersCollection.insert({
+                'firstname' : request.form['firstname'], 
+                'lastname' : request.form['lastname'], 
                 'email' : request.form['email'], 
-                'phone' : request.form['phone'], 
-                'region' : request.form['region'], 
-                'password' : hashpass
+                'empid' : request.form['empid'], 
+                'password' : hashpass,
+                'industry' : request.form['industry'], 
+                'serviceline' : request.form['serviceline'], 
+                'servicearea' : request.form['servicearea'], 
+                'designation' : request.form['designation'], 
+                'location' : request.form['location'], 
+                'mobileno' : request.form['mobileno'],
+                'permission': 'guest'
                 })
-            session['username'] = request.form['username']
-            return redirect(request.url)
-        
-        return 'Username already exist!'
+            session['email'] = request.form['email']      
+            return redirect('/login', code=200)
+        else:
+            raise exceptionHandler.InvalidUsage('User already exists', status_code=410)
 
-    return ''
-
-if __name__ == '__main__':
+if __name__ == 'app.auth':
     app.secret_key = 'speechSecret'
     app.run(debug=True)

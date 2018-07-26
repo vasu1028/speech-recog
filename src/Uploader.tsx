@@ -48,7 +48,7 @@ class Uploader extends React.Component {
             'content-type': 'multipart/form-data'
         }
     }
-    return axios.post(App.uploadUrl, formData, config).then((res) => {
+    return axios.post(App.apis.upload, formData, config).then((res) => {
       // document.getElementById('fileInput').value = '';
       return 'upload success'
     })

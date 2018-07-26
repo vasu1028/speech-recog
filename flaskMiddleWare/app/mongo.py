@@ -16,16 +16,16 @@ def prepareResponse(data):
 
 @app.route('/retrieve', methods=['GET', 'POST'])
 def retrieve():
-    data = routes.collection.find()
-    if routes.collection.count() == 0:
+    data = routes.recordingsCollection.find()
+    if routes.recordingsCollection.count() == 0:
         data = "no data"
     return prepareResponse(data)
     
 
 @app.route('/insert', methods=['POST'])
 def insert():
-   newCollectionId = routes.collection.insert_one(request.json)
-   newData = routes.collection.find_one({'_id': newCollectionId.inserted_id})
+   newCollectionId = routes.recordingsCollection.insert_one(request.json)
+   newData = routes.recordingsCollection.find_one({'_id': newCollectionId.inserted_id})
    return prepareResponse(newData)
 
 def pushToDatabase(fileName):
@@ -48,10 +48,14 @@ def pushToDatabase(fileName):
         'ISOdate': datetime.strptime(dateTime, "%Y-%m-%dT%H:%M:%S.000Z"),
         'type': 'audio/wav'
     }
-    newCollectionId = routes.collection.insert_one(obj)
-    newData = routes.collection.find_one({'_id': newCollectionId.inserted_id})
+    newCollectionId = routes.recordingsCollection.insert_one(obj)
+    newData = routes.recordingsCollection.find_one({'_id': newCollectionId.inserted_id})
     return prepareResponse(newData)
 
 def existInDatabase(fileName):
-    data = routes.collection.find({'fileName': fileName})
+    data = routes.recordingsCollection.find({'fileName': fileName})
     return data and data.count() > 0
+
+if __name__ == 'app.auth':
+    app.secret_key = 'speechSecret'
+    app.run(debug=True)
