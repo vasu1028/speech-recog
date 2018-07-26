@@ -3,7 +3,9 @@ import { HashRouter, Route, Switch } from 'react-router-dom';
 
 import './content.css';
 import Dashboard from './dashboard/dashboard';
+import Login from './login/login';
 import Profile from './profile/profile';
+import Registration from './registration/registration';
 import VoiceAnalyzer from './voiceAnalyzer/voiceAnalyzer';
 import Voices from './voices/voices';
 
@@ -20,6 +22,8 @@ class Content extends React.Component<any, any> {
                                     <Route exact={true} path='/profile' component={Profile} />
                                     <Route exact={true} path='/voiceAnalyzer' component={VoiceAnalyzer} />
                                     <Route exact={true} path='/voices' component={Voices} />
+                                    <Route exact={true} path='/register' component={Registration} />
+                                    <Route exact={true} path='/login' component={Login} />
                                 </Switch>
                             </div>
                         </div>

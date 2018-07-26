@@ -1,0 +1,10 @@
+.col-centered {
+    float: none;
+    margin: 0 auto;
+    background-color: #fff;
+    width: 95%;
+}
+
+.page-header {
+    color: brown;
+}
