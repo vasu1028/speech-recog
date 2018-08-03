@@ -6,6 +6,8 @@ from pymongo import MongoClient
 from bson import json_util, ObjectId, Binary
 from datetime import datetime
 import bcrypt
+import scipy.io.wavfile as wavfile
+import numpy as np
 
 client = MongoClient()
 folderName = 'uploads'
@@ -76,3 +78,16 @@ adminObj = {
     'mobileno' : 'admin',
     'permission': 'administrator'
 }
+
+@app.route('/getFileData', methods=['GET', 'POST'])
+def getFileData():
+    rate, data = wavfile.read(request.filename)
+
+    power = 20*np.log10(np.abs(np.fft.rfft(data[:1024, 1])))
+    frequency = np.abs(np.linspace(0, rate/2.0, len(power)))
+
+    res = { 'xValues': frequency.tolist(), 'yValues':power.tolist() }
+    print(res['xValues'])
+    print(res['yValues'])
+    return json_util.dumps(res)
+
