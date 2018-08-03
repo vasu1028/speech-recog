@@ -4,6 +4,12 @@ pip install pydub
 pip install bcrypt
 pip install google-cloud
 
+pip install google-api-core
+pip install google-auth
+pip install google-cloud-speech
+pip install googleapis-common-protos
+pip install grpcio
+
 set FLASK_APP=flaskMiddleWare.py
 set FLASK_DEBUG=true
 
