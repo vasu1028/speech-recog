@@ -2,6 +2,7 @@ pip install flask
 pip install Flask-PyMongo
 pip install pydub
 pip install bcrypt
+pip install google-cloud
 
 set FLASK_APP=flaskMiddleWare.py
 set FLASK_DEBUG=true
