@@ -1,3 +1,48 @@
-.main-header {
-    background-color: #3c8dbc;
+header.appBar {
+    background-color: transparent;
+    box-shadow: none;
+    border-bottom: 0;
+    margin-bottom: 0;
+    position: absolute;
+    width: 100%;
+    padding-top: 10px;
+    z-index: 1029;
+    color: #555555;
+    border: 0;
+    border-radius: 3px;
+    padding: 10px 0;
+    transition: all 150ms ease 0s;
+    min-height: 50px;
+    display: block
+}
+
+header div.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  min-height: 50px;
+}
+
+.flex {
+    flex: 1;
+}
+
+.title {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 300;
+    line-height: 1.5em;
+    line-height: 30px;
+    font-size: 18px;
+    border-radius: 3px;
+    text-transform: none;
+    color: inherit;
+}
+
+.title:hover, .title:focus {
+    background: transparent;
+}
+
+.appResponsive {
+    top: 8px;
 }

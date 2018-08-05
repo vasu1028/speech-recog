@@ -3,7 +3,7 @@ import { Chart } from "react-google-charts";
 
 import './dashboard.css';
 
-class Dashboard extends React.Component<any, any> {
+class DashboardPage extends React.Component<any, any> {
     public render() {
         const options = {
             title: "Voice Comparison",
@@ -35,4 +35,4 @@ class Dashboard extends React.Component<any, any> {
     }
 }
 
-export default Dashboard;
+export default DashboardPage;
