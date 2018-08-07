@@ -1,6 +1,7 @@
 declare module 'react-router-dom';
 declare module 'prop-types';
 declare module 'classnames';
+declare module 'history';
 declare module '@material-ui/core/AppBar';
 declare module '@material-ui/core/Drawer';
 declare module '@material-ui/core/Hidden';

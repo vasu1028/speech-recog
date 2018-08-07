@@ -5,7 +5,7 @@ import './App.css';
 import Content from './content/content';
 import Header from './header/header';
 import Sidebar from './sidebar/sidebar';
-import routes from "./Router";
+import routes from "./Routes/Router";
 
 import image from "./assets/img/sidebar-2.jpg";
 import logo from "./assets/img/reactlogo.png";
