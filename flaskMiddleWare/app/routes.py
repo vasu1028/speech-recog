@@ -87,7 +87,5 @@ def getFileData():
     frequency = np.abs(np.linspace(0, rate/2.0, len(power)))
 
     res = { 'xValues': frequency.tolist(), 'yValues':power.tolist() }
-    print(res['xValues'])
-    print(res['yValues'])
     return json_util.dumps(res)
 
