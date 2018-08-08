@@ -30,8 +30,9 @@ from google.cloud.speech import enums
 from google.cloud.speech import types
 from pydub import AudioSegment
 
+
 # [END import_libraries]
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./d-speech-6ef072e889ea.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./d-speech-ca90ae9026ea.json"
 
 # [START def_transcribe_file]
 def transcribe_file(speech_file):

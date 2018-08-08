@@ -27,14 +27,14 @@ def allowed_file(filename):
 def catch_all(path):
     return 'You want path: %s' % path
 
-@app.before_request
-def before_request():
-    if 'email' in session or request.endpoint == 'login' or request.endpoint == 'register':
-        admin = usersCollection.find_one({ 'email': 'admin' })
-        if admin is None :
-            usersCollection.insert_one(adminObj)
-    else:            
-        return redirect('login', code=200)
+# @app.before_request
+# def before_request():
+    # if 'email' in session or request.endpoint == 'login' or request.endpoint == 'register':
+    #     admin = usersCollection.find_one({ 'email': 'admin' })
+    #     if admin is None :
+    #         usersCollection.insert_one(adminObj)
+    # else:            
+    #     return redirect('login', code=200)
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
@@ -81,7 +81,7 @@ adminObj = {
 
 @app.route('/getFileData', methods=['GET', 'POST'])
 def getFileData():
-    rate, data = wavfile.read(request.filename)
+    rate, data = wavfile.read(request.form['filename'])
 
     power = 20*np.log10(np.abs(np.fft.rfft(data[:1024, 1])))
     frequency = np.abs(np.linspace(0, rate/2.0, len(power)))
