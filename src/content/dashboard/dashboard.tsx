@@ -1,80 +1,93 @@
 import * as React from 'react';
-import { Chart } from "react-google-charts";
-
 import './dashboard.css';
 import axios from 'axios';
 
-interface IState {
-    fileData: any
-}
-class DashboardPage extends React.Component<any, IState> {
-    public state: IState;
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            fileData: []
-        }
-    }
-    public render() {
-        const options = {
-            title: "Voice Comparison",
-            hAxis: { title: "Frequency"},
-            vAxis: { title: "Volume"},
-            legend: "none"
-        };
-      
+class DashboardPage extends React.Component<any, any> {
+    public componentDidMount() {
         this.getFilesData();
+    }
+
+    public render() {
         return (
-            <div className={"my-pretty-chart-container"}>
-                <Chart
-                    chartType='LineChart'
-                    data={this.state.fileData}
-                    options={options}
-                    width='100%'
-                    height='400px'
-                    legendToggle={true}
-                    />
-            </div>
-        )
+        <div id="chartContainer" style={{height: 450 + "px", width: 100 + "%"}}/>
+        );
     }
 
     public getFilesData() {
         const formData = new FormData();
-        formData.append('filename', "C:/Users/rshriramoji/Desktop/FI/2018-19/speech-recog/flaskMiddleWare/uploads/Recording.wav");
+        formData.append('fileName1', "C:/Users/rshriramoji/Desktop/FI/2018-19/speech-recog/flaskMiddleWare/uploads/Recording1.wav")
+        formData.append('fileName2', "C:/Users/rshriramoji/Desktop/FI/2018-19/speech-recog/flaskMiddleWare/uploads/Recording2.wav")
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
             }
         }
         try {
-            const result = [["Frequency", "Volume"],[0,0]];
             axios.post('http://127.0.0.1:5000/getFileData', formData, config).then((res)=> {
-                console.log(res);
-                for(let i=0;i<res.data.xValues.length;i++){
-                    const coPoints = [];
-                    coPoints.push(res.data.xValues[i]);
-                    coPoints.push(res.data.yValues[i]);
-                    result.push(coPoints);
-                }
-                this.setState({'fileData': result});
+                const chart = new CanvasJS.Chart("chartContainer", {
+                    title: {
+                        text: "Voice Comparison"
+                    },
+                    axisX: {
+                        title: "Frequency"
+                    },
+                    axisY: {
+                        title: "Power"
+                    },
+                    toolTip: {
+                        shared: true
+                    },
+                    legend: {
+                        cursor: "pointer",
+                        verticalAlign: "top",
+                        horizontalAlign: "center",
+                        dockInsidePlotArea: false
+                    },
+                    data: [{
+                        type: "line",
+                        name: "User 1",
+                        showInLegend: true,
+                        markerSize: 0,
+                        dataPoints: res.data.fileData1
+                    },{
+                        type: "line",
+                        name: "User 2",
+                        showInLegend: true,
+                        markerSize: 0,
+                        dataPoints: res.data.fileData2
+                    }]
+                });
+                chart.render();
             }, error => {
                 console.log(error);
             })
         } catch(e) {
             console.log(e);
         }
-        // return [
-        //     ["Frequency", "Volume"],
-        //     [2, 12],[4, 5.5],
-        //     [5, 14],
-        //     [6, 5],
-        //     [7, 3.5],
-        //     [7.8, 7],[8, 12],
-        //     [9, 5.5],
-        //     [11, 14],
-        //     [14, 5],
-        //     [115.3, 3.5],
+
+        // this.state.data1 = [
+        //     { x: 0.12, y: 209 },
+        //     { x: 0.3, y: 495 },
+        //     { x: 1.04, y: 419 },
+        //     { x: 1.12, y: 309 },
+        //     { x: 1.3, y: 215 },
+        //     { x: 1.34, y: 219 },
+        //     { x: 1.36, y: 309 },
+        //     { x: 1.53, y: 115 },
+        //     { x: 1.84, y: 419 }
         // ];
+        // this.state.data2 = [
+        //     { x: 0.11, y: 529 },
+        //     { x: 0.52, y: 539 },
+        //     { x: 1.1, y: 519 },
+        //     { x: 1.12, y: 359 },
+        //     { x: 1.3, y: 112 },
+        //     { x: 1.34, y: 299 },
+        //     { x: 1.36, y: 359 },
+        //     { x: 1.53, y: 215 },
+        //     { x: 1.84, y: 119 }
+        // ];
+       
     }
 }
 

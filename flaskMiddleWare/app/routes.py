@@ -1,3 +1,5 @@
+from typing import Any
+
 from app import app, mongo, auth
 import os
 from flask import Flask, flash, request, redirect, url_for, abort, jsonify, session
@@ -6,8 +8,8 @@ from pymongo import MongoClient
 from bson import json_util, ObjectId, Binary
 from datetime import datetime
 import bcrypt
-import scipy.io.wavfile as wavfile
 import numpy as np
+import soundfile
 
 client = MongoClient()
 folderName = 'uploads'
@@ -79,13 +81,27 @@ adminObj = {
     'permission': 'administrator'
 }
 
-@app.route('/getFileData', methods=['GET', 'POST'])
-def getFileData():
-    rate, data = wavfile.read(request.form['filename'])
-
+def getData(fileName):
+    data, rate = soundfile.read(fileName)
     power = 20*np.log10(np.abs(np.fft.rfft(data[:1024, 1])))
     frequency = np.abs(np.linspace(0, rate/2.0, len(power)))
+    xValues = frequency.tolist()
+    yValues = power.tolist()
 
-    res = { 'xValues': frequency.tolist(), 'yValues':power.tolist() }
-    return json_util.dumps(res)
+    coordinates = []
+    for index in range(0, len(power.tolist())):
+        coordinate = {'x': xValues[index], 'y': yValues[index]}
+        coordinates.append(coordinate)
+
+    print(coordinates)
+    return coordinates
+
+@app.route('/getFileData', methods=['GET', 'POST'])
+def getFileData():
+    data = []
+    fileData1 = getData(request.form['fileName1'])
+    fileData2 = getData(request.form['fileName2'])
+    print(fileData1)
+    print(fileData2)
+    return json_util.dumps({'fileData1':fileData1, 'fileData2':fileData2})
 
