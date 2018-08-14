@@ -4,9 +4,11 @@ import Profile from '../content/profile/profile';
 import Registration from '../content/registration/registration';
 import VoiceAnalyzer from '../content/voiceAnalyzer/voiceAnalyzer';
 import Voices from '../content/voices/voices';
+import CompareVoices from '../content/compareVoices/comparevoices';
 // @material-ui/icons
 import Dashboard from "@material-ui/icons/Dashboard";
 import Person from "@material-ui/icons/Person";
+import GraphicEq from "@material-ui/icons/GraphicEq";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import BubbleChart from "@material-ui/icons/BubbleChart";
 
@@ -41,6 +43,14 @@ const routes = [{
         navbarName: "Voices",
         icon: LibraryBooks,
         component: Voices,
+        type: "sideBar"
+    },
+    {
+        path: "/compareVoices",
+        sidebarName: "Compare Voices",
+        navbarName: "Compare Voices",
+        icon: GraphicEq,
+        component: CompareVoices,
         type: "sideBar"
     },
     {

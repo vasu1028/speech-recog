@@ -1,0 +1,17 @@
+.align-left {
+    float:left;
+    width:45%;
+}
+
+.align-right {
+    float:right;
+    width:50%;
+}
+
+.align-text {
+    text-align: center;
+}
+
+.margin50 {
+    margin-top: 40%;
+}
