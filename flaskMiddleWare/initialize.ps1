@@ -4,6 +4,8 @@ pip install pydub
 pip install bcrypt
 pip install google-cloud
 pip install --upgrade google-cloud-speech
+pip install soundfile
+pip install numpy
 
 set FLASK_APP=flaskMiddleWare.py
 set FLASK_DEBUG=true
