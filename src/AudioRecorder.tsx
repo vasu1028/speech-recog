@@ -151,9 +151,12 @@ export default class AudioRecorder extends React.Component<IAudioRecorderProps, 
     /**
      * code to upload file to server
      */
-    const data = new FormData();
+    const data = new FormData();    
+    data.append('file', this.waveInterface.audioData, this.state.filename)
+    // TODO: Set user, usertype dynamically
+    data.append('username', 'Ram')
+    data.append('usertype', 'normal')
     const settings = { headers: { 'content-type': 'multipart/form-data' } };
-    data.append('file', this.waveInterface.audioData, this.state.filename);
     axios.post(App.apis.upload, data, settings).then((res) => {
       this.onRemoveClick();
       return 'upload success'

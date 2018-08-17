@@ -1,6 +1,6 @@
 .align-left {
     float:left;
-    width:45%;
+    width:49%;
 }
 
 .align-right {
@@ -14,4 +14,8 @@
 
 .margin50 {
     margin-top: 40%;
+}
+
+.height {
+    height: 400px;
 }
