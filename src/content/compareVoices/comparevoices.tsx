@@ -21,14 +21,14 @@ class CompareVoices extends React.Component<any, any> {
         this.state = {
             selectedSampleVoice: '',
             selectedUserVoice: '',
-            data: [{user:'', fileName: ''}]
+            data: [{user:'', fileName: '', usertype: ''}]
         };
     }
 
     public state: ICompareVoicesForm = {
         selectedSampleVoice: '',
-        selectedUserVoice: '',
-        data: [{user:'', fileName: ''}]     
+        selectedUserVoice: '',        
+        data: [{user:'', fileName: '', usertype: ''}]     
     };
 
     public componentDidMount() {
@@ -56,19 +56,14 @@ class CompareVoices extends React.Component<any, any> {
     }
 
     public render() {
-
-        // const audioFiles = [
-        //     { "username": "John", "recorded_file": "John.wav", "date": "22/07/2018" },
-        //     { "username": "Doe", "recorded_file": "Doe.wav", "date": "20/07/2018" },
-        //     { "username": "Mike", "recorded_file": "Mike.wav", "date": "25/07/2018" }
-        // ];
-        const sampleVoicerows = this.state.data.map((audio) =>
+        const sampleVoiceFilteredRows = this.state.data.filter(ele => ele.usertype === "system")
+        const sampleVoicerows = sampleVoiceFilteredRows.map((audio) =>
             <TableRow key={audio.user}>
                 <TableCell>
                 <Radio
-                    checked={this.state.selectedSampleVoice === audio.user}
+                    checked={this.state.selectedSampleVoice === audio.fileName}
                     onChange={this.handleSampleVoiceChange}
-                    value={audio.user}
+                    value={audio.fileName}
                     name="radio-button-demo"
                     />
                 </TableCell>
@@ -76,13 +71,14 @@ class CompareVoices extends React.Component<any, any> {
                 <TableCell>{audio.fileName}</TableCell>
             </TableRow>
         );
-        const userVoicerows = this.state.data.map((audio) =>
+        const userVoicerowsFilteredRows = this.state.data.filter(ele => ele.usertype === "normal")
+        const userVoicerows = userVoicerowsFilteredRows.map((audio) =>
             <TableRow key={audio.user}>
                 <TableCell>
                 <Radio
-                    checked={this.state.selectedUserVoice === audio.user}
+                    checked={this.state.selectedUserVoice === audio.fileName}
                     onChange={this.handleUserVoiceChange}
-                    value={audio.user}
+                    value={audio.fileName}
                     name="radio-button-demo"
                     />
                 </TableCell>
@@ -146,5 +142,6 @@ interface ICompareVoicesForm {
 
 interface IVoiceRecord {
     user: string;
+    usertype: string;
     fileName: string;
 }

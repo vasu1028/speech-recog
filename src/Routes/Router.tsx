@@ -14,20 +14,12 @@ import BubbleChart from "@material-ui/icons/BubbleChart";
 
 
 const routes = [{
-        path: "/dashboard",
-        sidebarName: "Dashboard",
-        navbarName: "Dashboard",
-        icon: Dashboard,
-        component: DashboardPage,
-        type: "sideBar"
-    },
-    {
         path: "/profile",
         sidebarName: "User Profile",
         navbarName: "Profile",
         icon: Person,
         component: Profile,
-        type: "sideBar"
+        type: "header"
     },
     {
         path: "/voiceAnalyzer",
@@ -51,6 +43,14 @@ const routes = [{
         navbarName: "Compare Voices",
         icon: GraphicEq,
         component: CompareVoices,
+        type: "sideBar"
+    },
+    {
+        path: "/dashboard",
+        sidebarName: "Voice Chart",
+        navbarName: "Voice Chart",
+        icon: Dashboard,
+        component: DashboardPage,
         type: "sideBar"
     },
     {
