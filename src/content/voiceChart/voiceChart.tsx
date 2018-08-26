@@ -1,8 +1,8 @@
 import * as React from 'react';
-import './dashboard.css';
+import './voiceChart.css';
 import axios from 'axios';
 
-class DashboardPage extends React.Component<any, any> {
+class VoiceChart extends React.Component<any, any> {
     public componentDidMount() {
         this.getFilesData();
     }
@@ -10,38 +10,8 @@ class DashboardPage extends React.Component<any, any> {
     public render() {
         return (
             <div>
-                <div className="section-1">
-                    <h3>Latest Compared Voice</h3>
-                    <div id="chartContainer" style={{height: 400 + "px", width: 90 + "%"}}/>
-                </div>
-                <div className="section-2">
-                    <div className="dash-side-section">
-                        <h3>Favourite</h3>
-                        <div className="sideContent">
-                            <li>Aud-001.wav</li>
-                            <li>Aud-002.wav</li>
-                            <li>Aud-003.wav</li>
-                        </div>
-                    </div>
-                    <div className="dash-side-section">
-                        <h3>Most Recent</h3>
-                        <div className="sideContent">
-                            <li>Aud-001.wav</li>
-                            <li>Aud-002.wav</li>
-                            <li>Aud-003.wav</li>
-                        </div>
-                    </div>
-                    <div className="dash-side-section">
-                        <h3>Most Listened</h3>
-                        <div className="sideContent">
-                            <li>Aud-001.wav</li>
-                            <li>Aud-002.wav</li>
-                            <li>Aud-003.wav</li>
-                        </div>
-                    </div>
-                </div>
+                <div id="chartContainer" style={{height: 450 + "px", width: 100 + "%"}}/>
             </div>
-        
         );
     }
 
@@ -123,4 +93,4 @@ class DashboardPage extends React.Component<any, any> {
     }
 }
 
-export default DashboardPage;
+export default VoiceChart;

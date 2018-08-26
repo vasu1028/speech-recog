@@ -1,4 +1,5 @@
 import DashboardPage from '../content/dashboard/dashboard';
+import VoiceChart from '../content/voiceChart/voiceChart';
 import Login from '../content/login/login';
 import Profile from '../content/profile/profile';
 import Registration from '../content/registration/registration';
@@ -6,7 +7,6 @@ import VoiceAnalyzer from '../content/voiceAnalyzer/voiceAnalyzer';
 import Voices from '../content/voices/voices';
 import CompareVoices from '../content/compareVoices/comparevoices';
 // @material-ui/icons
-import Dashboard from "@material-ui/icons/Dashboard";
 import Person from "@material-ui/icons/Person";
 import GraphicEq from "@material-ui/icons/GraphicEq";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
@@ -57,8 +57,8 @@ const routes = [{
         path: "/voiceChart",
         sidebarName: "Voice Chart",
         navbarName: "Voice Chart",
-        icon: Dashboard,
-        component: DashboardPage,
+        icon: GraphicEq,
+        component: VoiceChart,
         type: "sideBar"
     },
     {
@@ -77,6 +77,15 @@ const routes = [{
         component: Registration,
         type: "header"
     },
-    { redirect: true, path: "/", to: "/dashboard", navbarName: "Redirect", component: DashboardPage }];
+    { 
+        redirect: true,
+        path: "/",
+        to: "/dashboard",
+        sidebarName: "Dashboard", 
+        navbarName: "Dashboard", 
+        icon: "",
+        component: DashboardPage,
+        type: "sideBar"
+    }];
 
 export default routes;
