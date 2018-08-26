@@ -9,7 +9,39 @@ class DashboardPage extends React.Component<any, any> {
 
     public render() {
         return (
-        <div id="chartContainer" style={{height: 450 + "px", width: 100 + "%"}}/>
+            <div>
+                <div className="section-1">
+                    <h3>Latest Compared Voice</h3>
+                    <div id="chartContainer" style={{height: 450 + "px", width: 100 + "%"}}/>
+                </div>
+                <div className="section-2">
+                    <div className="dash-side-section">
+                        <h3>Favourite</h3>
+                        <div className="sideContent">
+                            <li>Aud-001.wav</li>
+                            <li>Aud-002.wav</li>
+                            <li>Aud-003.wav</li>
+                        </div>
+                    </div>
+                    <div className="dash-side-section">
+                        <h3>Most Recent</h3>
+                        <div className="sideContent">
+                            <li>Aud-001.wav</li>
+                            <li>Aud-002.wav</li>
+                            <li>Aud-003.wav</li>
+                        </div>
+                    </div>
+                    <div className="dash-side-section">
+                        <h3>Most Listened</h3>
+                        <div className="sideContent">
+                            <li>Aud-001.wav</li>
+                            <li>Aud-002.wav</li>
+                            <li>Aud-003.wav</li>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
         );
     }
 

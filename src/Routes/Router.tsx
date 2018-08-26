@@ -22,6 +22,14 @@ const routes = [{
         type: "header"
     },
     {
+        path: "/dashboard",
+        sidebarName: "Dashboard",
+        navbarName: "Dashboard",
+        icon: BubbleChart,
+        component: DashboardPage,
+        type: "sideBar"
+    },
+    {
         path: "/voiceAnalyzer",
         sidebarName: "Voice Analyzer",
         navbarName: "Voice Analyzer",
@@ -46,7 +54,7 @@ const routes = [{
         type: "sideBar"
     },
     {
-        path: "/dashboard",
+        path: "/voiceChart",
         sidebarName: "Voice Chart",
         navbarName: "Voice Chart",
         icon: Dashboard,
