@@ -5,6 +5,7 @@ import './App.css';
 import Content from './content/content';
 import Header from './header/header';
 import Sidebar from './sidebar/sidebar';
+import Login from './content/login/login';
 import routes from "./Routes/Router";
 
 import image from "./assets/img/sidebar-2.jpg";
@@ -44,26 +45,30 @@ export class App extends React.Component<any, IState> {
 
   public render() {
     return (
-      <div className="wrapper">
-        <Sidebar
-          routes={routes}
-          logoText={"Voice Analyzer"}
-          logo={logo}
-          image={image}
-          handleDrawerToggle={this.handleDrawerToggle}
-          open={this.state.mobileOpen}
-          color="blue"
-         />
-        <div className="mainPanel">
-          <Header 
-            routes={routes}
-            handleDrawerToggle={this.handleDrawerToggle}
-          />
-          <Content 
-            routes={routes}
-          />
-        </div>
-      </div>
+      <Login>
+        
+      </Login>
+
+      // <div className="wrapper">
+      //   <Sidebar
+      //     routes={routes}
+      //     logoText={"Voice Analyzer"}
+      //     logo={logo}
+      //     image={image}
+      //     handleDrawerToggle={this.handleDrawerToggle}
+      //     open={this.state.mobileOpen}
+      //     color="blue"
+      //    />
+      //   <div className="mainPanel">
+      //     <Header 
+      //       routes={routes}
+      //       handleDrawerToggle={this.handleDrawerToggle}
+      //     />
+      //     <Content 
+      //       routes={routes}
+      //     />
+      //   </div>
+      // </div>
     );
   }
 }

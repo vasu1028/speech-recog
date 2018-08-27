@@ -69,6 +69,6 @@ const routes = [{
         component: Registration,
         type: "header"
     },
-    { redirect: true, path: "/", to: "/dashboard", navbarName: "Redirect", component: DashboardPage }];
+    { redirect: true, path: "/", to: "/login", navbarName: "Redirect", component: Login }];
 
 export default routes;

@@ -1,15 +1,18 @@
 from typing import Any
 
-from app import app, mongo, auth
+from app import app, mongo, auth, exceptionHandler
 import os
-from flask import Flask, flash, request, redirect, url_for, abort, jsonify, session
+from flask import Flask, flash, request, redirect, url_for, abort, jsonify, session, g
 from werkzeug.utils import secure_filename
 from pymongo import MongoClient
 from bson import json_util, ObjectId, Binary
-from datetime import datetime
+from datetime import datetime, timedelta
 import bcrypt
 import numpy as np
 import soundfile
+from flask_cors import CORS, cross_origin
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 client = MongoClient()
 folderName = 'uploads'
@@ -25,18 +28,22 @@ def allowed_file(filename):
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
+@cross_origin()
 def catch_all(path):
     return 'You want path: %s' % path
 
-# @app.before_request
-# def before_request():
-    # if 'email' in session or request.endpoint == 'login' or request.endpoint == 'register':
-    #     admin = usersCollection.find_one({ 'email': 'admin' })
-    #     if admin is None :
-    #         usersCollection.insert_one(adminObj)
-    # else:            
-    #     return redirect('login', code=200)
+@app.before_request
+def before_request():
+    if request.method != 'OPTIONS':
+        print(g)
+        if 'email' in session:
+            g.email = session['email']
+        if request.endpoint == 'login' or request.endpoint == 'register' or auth.isUserLoggedIn(request.headers['Authorization']):
+            admin = usersCollection.find_one({ 'email': 'admin' })
+            if admin is None :
+                usersCollection.insert_one(adminObj)
+        elif not auth.isUserLoggedIn('kibose'):
+            raise exceptionHandler.InvalidUsage('Session Timed Out', status_code=420)
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
@@ -67,17 +74,17 @@ def upload_file():
     '''
 
 adminObj = {
-    'firstname' : 'admin', 
-    'lastname' : 'admin', 
+    'firstName' : 'admin', 
+    'lastNname' : 'admin', 
     'email' : 'admin',
-    'empid' : '0000',
+    'empId' : '0000',
     'password' : bcrypt.hashpw('password'.encode('utf-8'), bcrypt.gensalt()),
     'industry' : 'admin', 
-    'serviceline' : 'admin', 
-    'servicearea' : 'admin', 
+    'serviceLine' : 'admin', 
+    'serviceArea' : 'admin', 
     'designation' : 'admin', 
     'location' : 'admin', 
-    'mobileno' : 'admin',
+    'mobileNo' : 'admin',
     'permission': 'administrator'
 }
 
@@ -96,12 +103,12 @@ def getData(fileName):
     print(coordinates)
     return coordinates
 
-@app.route('/getFileData', methods=['GET', 'POST'])
-def getFileData():
-    data = []
-    fileData1 = getData(request.form['fileName1'])
-    fileData2 = getData(request.form['fileName2'])
-    print(fileData1)
-    print(fileData2)
-    return json_util.dumps({'fileData1':fileData1, 'fileData2':fileData2})
+# @app.route('/getFileData', methods=['GET', 'POST'])
+# def getFileData():
+#     data = []
+#     fileData1 = getData(request.form['fileName1'])
+#     fileData2 = getData(request.form['fileName2'])
+#     print(fileData1)
+#     print(fileData2)
+#     return json_util.dumps({'fileData1':fileData1, 'fileData2':fileData2})
 
