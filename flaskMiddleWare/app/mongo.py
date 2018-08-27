@@ -14,9 +14,8 @@ def prepareResponse(data):
     res = { 'result': data }
     return json_util.dumps(res)
 
-@app.route('/retrieve', methods=['GET', 'POST'])
-def retrieve():
-    data = routes.recordingsCollection.find()
+def retrieve(username):
+    data = routes.recordingsCollection.find({"$or": [{"user": username}, {"user": "systemuser"}]})
     if routes.recordingsCollection.count() == 0:
         data = "no data"
     return prepareResponse(data)
@@ -28,7 +27,7 @@ def insert():
    newData = routes.recordingsCollection.find_one({'_id': newCollectionId.inserted_id})
    return prepareResponse(newData)
 
-def pushToDatabase(fileName):
+def pushToDatabase(fileName, username, usertype):
     absolutePath = os.path.abspath(os.path.join(app.config['UPLOAD_FOLDER'], fileName))
     response = transcribe.transcribe_file(absolutePath)
     duration = response[0]
@@ -46,7 +45,9 @@ def pushToDatabase(fileName):
         'date': datetime.now().strftime("%d/%m/%Y"),
         'time': datetime.now().strftime("%H:%M:%S"),
         'ISOdate': datetime.strptime(dateTime, "%Y-%m-%dT%H:%M:%S.000Z"),
-        'type': 'audio/wav'
+        'type': 'audio/wav',
+        'user': username,
+        'usertype': usertype
     }
     newCollectionId = routes.recordingsCollection.insert_one(obj)
     newData = routes.recordingsCollection.find_one({'_id': newCollectionId.inserted_id})

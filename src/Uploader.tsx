@@ -43,6 +43,9 @@ class Uploader extends React.Component {
   public fileUpload(file: any){
     const formData = new FormData();
     formData.append('file', file)
+    // TODO: Set user, usertype dynamically
+    formData.append('username', 'Ram')
+    formData.append('usertype', 'normal')
     const config = {
         headers: {
             'content-type': 'multipart/form-data'

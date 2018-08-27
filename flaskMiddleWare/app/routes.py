@@ -53,6 +53,8 @@ def upload_file():
             flash('No file part')
             return redirect(request.url)
         file = request.files['file']
+        username = request.form['username']
+        usertype = request.form['usertype']
         # if user does not select file, browser also
         # submit an empty part without filename
         if file.filename == '':
@@ -61,7 +63,7 @@ def upload_file():
         if file and allowed_file(file.filename) and not mongo.existInDatabase(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            response = mongo.pushToDatabase(filename)
+            response = mongo.pushToDatabase(filename, username, usertype)
             return mongo.prepareResponse(response)
     return '''
     <!doctype html>
@@ -103,12 +105,15 @@ def getData(fileName):
     print(coordinates)
     return coordinates
 
-# @app.route('/getFileData', methods=['GET', 'POST'])
-# def getFileData():
-#     data = []
-#     fileData1 = getData(request.form['fileName1'])
-#     fileData2 = getData(request.form['fileName2'])
-#     print(fileData1)
-#     print(fileData2)
-#     return json_util.dumps({'fileData1':fileData1, 'fileData2':fileData2})
+@app.route('/getFileData', methods=['GET', 'POST'])
+def getFileData():
+    data = []
+    fileData1 = getData(request.form['fileName1'])
+    fileData2 = getData(request.form['fileName2'])
+    return json_util.dumps({'fileData1':fileData1, 'fileData2':fileData2})
+
+@app.route('/getUserAudioFiles', methods=['GET', 'POST'])
+def getUserAudioFiles():
+    username = request.form['username']
+    return mongo.retrieve(username)
 

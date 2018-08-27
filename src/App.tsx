@@ -21,7 +21,8 @@ export class App extends React.Component<any, IState> {
   public static apis = {
     upload: App.url + 'upload',
     login: App.url + 'login',
-    register: App.url + 'register'
+    register: App.url + 'register',
+    getUserAudioFiles: App.url + 'getUserAudioFiles'
   }
   public state: IState;
 
