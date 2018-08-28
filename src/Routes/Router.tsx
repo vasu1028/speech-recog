@@ -15,19 +15,19 @@ import BubbleChart from "@material-ui/icons/BubbleChart";
 
 
 const routes = [{
+        path: "/dashboard",
+        sidebarName: "Dashboard",
+        navbarName: "Dashboard",
+        icon: Dashboard,
+        component: DashboardPage,
+        type: "sideBar"
+    },
+    {
         path: "/profile",
         sidebarName: "User Profile",
         navbarName: "Profile",
         icon: Person,
         component: Profile,
-        type: "header"
-    },
-    {
-        path: "/dashboard",
-        sidebarName: "Dashboard",
-        navbarName: "Dashboard",
-        icon: BubbleChart,
-        component: DashboardPage,
         type: "sideBar"
     },
     {
@@ -63,14 +63,6 @@ const routes = [{
         type: "sideBar"
     },
     {
-        path: "/voiceChart",
-        sidebarName: "Voice Chart",
-        navbarName: "Voice Chart",
-        icon: Dashboard,
-        component: DashboardPage,
-        type: "sideBar"
-    },
-    {
         path: "/login",
         sidebarName: "Login",
         navbarName: "Login",
@@ -86,6 +78,6 @@ const routes = [{
         component: Registration,
         type: "header"
     },
-    { redirect: true, path: "/", to: "/dashboard", navbarName: "Redirect", component: DashboardPage }];
+    { redirect: true, path: "/", to: "/login", navbarName: "Redirect", component: Login }];
 
 export default routes;

@@ -15,4 +15,5 @@ declare module '@material-ui/core/Typography';
 declare module '@material-ui/core/Button';
 declare module '@material-ui/core/IconButton';
 declare module '@material-ui/icons/Menu';
+declare module 'bootstrap'
 declare const CanvasJS:any;

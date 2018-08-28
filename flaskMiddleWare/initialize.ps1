@@ -4,6 +4,7 @@ pip install pydub
 pip install bcrypt
 pip install google-cloud
 pip install --upgrade google-cloud-speech
+pip install flask-cors
 pip install soundfile
 pip install numpy
 
