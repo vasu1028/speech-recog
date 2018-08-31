@@ -1,6 +1,6 @@
 from typing import Any
 
-from app import app, mongo, auth, exceptionHandler
+from app import app, mongo, auth, retrieveData, exceptionHandler
 import os
 from flask import Flask, flash, request, redirect, url_for, abort, jsonify, session, g
 from werkzeug.utils import secure_filename
@@ -122,4 +122,13 @@ def getFileData():
 def getUserAudioFiles():
     username = request.form['username']
     return mongo.retrieve(username)
+
+@app.route('/getDemoUserAudioFiles', methods=['GET', 'POST'])
+def getDemoUserAudioFiles():
+    return retrieveData.retrieveDemoRecordings()
+
+@app.route('/getMyUserAudioFiles', methods=['GET', 'POST'])
+def getMyUserAudioFiles():
+    username = request.form['username']
+    return retrieveData.retrieveMyRecordings(username)
 

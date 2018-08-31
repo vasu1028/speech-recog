@@ -3,7 +3,8 @@ import Login from '../content/login/login';
 import Profile from '../content/profile/profile';
 import Registration from '../content/registration/registration';
 import VoiceAnalyzer from '../content/voiceAnalyzer/voiceAnalyzer';
-import Voices from '../content/voices/voices';
+import DemoVoices from '../content/voices/voices';
+import MyRecordings from '../content/myRecordings/myRecordings';
 import CompareVoices from '../content/compareVoices/comparevoices';
 // @material-ui/icons
 import Dashboard from "@material-ui/icons/Dashboard";
@@ -42,8 +43,16 @@ const routes = [{
         sidebarName: "Voices",
         navbarName: "Voices",
         icon: LibraryBooks,
-        component: Voices,
+        component: DemoVoices,
         type: "sideBar"
+    },
+    {
+        path: "/myRecordings",
+        sidebarName: "My Recordings",
+        navbarName: "My Recordings",
+        icon: LibraryBooks,
+        component: MyRecordings,
+        type: "voices"
     },
     {
         path: "/compareVoices",

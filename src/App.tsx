@@ -22,7 +22,9 @@ export class App extends React.Component<any, IState> {
     upload: App.url + 'upload',
     login: App.url + 'login',
     register: App.url + 'register',
-    getUserAudioFiles: App.url + 'getUserAudioFiles'
+    getUserAudioFiles: App.url + 'getUserAudioFiles',
+    getDemoUserAudioFiles: App.url + 'getDemoUserAudioFiles',
+    getMyUserAudioFiles: App.url + 'getMyUserAudioFiles'
   }
   public state: IState;
 

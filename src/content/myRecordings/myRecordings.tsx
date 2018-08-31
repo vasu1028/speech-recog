@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { NavLink } from 'react-router-dom';
-import './voices.css';
+import './myRecordings.css';
 import axios from 'axios';
 import App from '../../App'
 
@@ -12,28 +12,30 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 // import GraphicEq from "@material-ui/icons/GraphicEq";
 
-class DemoVoices extends React.Component<any, IState> {
+class MyRecordings extends React.Component<any, IState> {
 
     public state: IState;
 
     constructor(props: any) {
         super(props);
         this.state = {
-            demoVoicesData: [{ user: '', fileName: '', usertype: '', date: '', time: '', duration_milliseconds: 0 }]
+            myVoicesData: [{ user: '', fileName: '', usertype: '', date: '', time: '', duration_milliseconds: 0 }]
         };
     }
 
-    public componentDidMount() {
+    public componentDidMount() {        
+        const data = new FormData();
         const settings = { headers: { 'content-type': 'multipart/form-data' } };
-        axios.get(App.apis.getDemoUserAudioFiles, settings).then((res) => {
+        data.append('username', 'Surya');
+        axios.post(App.apis.getMyUserAudioFiles, data, settings).then((res) => {
             this.setState({
-                demoVoicesData: res.data.result
+                myVoicesData: res.data.result
             });
         })
     }
 
     public render() {
-        const sampleVoicerows = this.state.demoVoicesData.map((audio) =>
+        const sampleVoicerows = this.state.myVoicesData.map((audio) =>
             <TableRow key={audio.user}>
                 <TableCell>{audio.user}</TableCell>
                 <TableCell>{audio.date} {audio.time}</TableCell>
@@ -48,15 +50,15 @@ class DemoVoices extends React.Component<any, IState> {
                 <div className="height">
                     <div className="align-text">
                         <div>
-                            <h2 className="align-left">Sample voice records</h2>
+                            <h2 className="align-left">My recordings</h2>
                             <Button className="align-right voicesButton">
                                 <NavLink
-                                    to='/myRecordings'
+                                    to='/voices'
                                     className="item"
                                     activeClassName="active"
                                     replace={false}
                                     >
-                                    My Recordings
+                                    Demo Voices
                                 </NavLink>
                             </Button>
                         </div>
@@ -81,10 +83,10 @@ class DemoVoices extends React.Component<any, IState> {
     }
 }
 
-export default DemoVoices;
+export default MyRecordings;
 
 interface IState {
-    demoVoicesData: IVoiceRecord[]
+    myVoicesData: IVoiceRecord[]
 }
 
 interface IVoiceRecord {
