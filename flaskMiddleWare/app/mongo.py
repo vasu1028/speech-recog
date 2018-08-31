@@ -27,11 +27,20 @@ def insert():
    newData = routes.recordingsCollection.find_one({'_id': newCollectionId.inserted_id})
    return prepareResponse(newData)
 
-def pushToDatabase(fileName, username, usertype):
+def pushToDatabase(fileName, email, userPermission):
     absolutePath = os.path.abspath(os.path.join(app.config['UPLOAD_FOLDER'], fileName))
-    response = transcribe.transcribe_file(absolutePath)
-    duration = response[0]
-    text = response[1]
+
+    # Remove Commenting of the below lines once google cloud api is up and running
+    # and remove lines 39 & 40 (duration and text)
+    # response = transcribe.transcribe_file(absolutePath)
+    # duration = response[0]
+    # text = response[1]
+
+    # temp
+    duration = 10
+    text = 'test test'
+    # temp
+
     monoFilePath = fileName.split('.')[0] + '__mono.wav'
     monoAbsolutePath = os.path.abspath(os.path.join(app.config['UPLOAD_FOLDER'], monoFilePath))
     dateTime = datetime.now().strftime("%Y-%m-%dT%H:%M:%S.000Z")
@@ -46,8 +55,8 @@ def pushToDatabase(fileName, username, usertype):
         'time': datetime.now().strftime("%H:%M:%S"),
         'ISOdate': datetime.strptime(dateTime, "%Y-%m-%dT%H:%M:%S.000Z"),
         'type': 'audio/wav',
-        'user': username,
-        'usertype': usertype
+        'user': email,
+        'permission': userPermission
     }
     newCollectionId = routes.recordingsCollection.insert_one(obj)
     newData = routes.recordingsCollection.find_one({'_id': newCollectionId.inserted_id})

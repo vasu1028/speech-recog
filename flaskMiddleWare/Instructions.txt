@@ -12,8 +12,8 @@ https://www.mongodb.com/download-center?jmp=nav#enterprise
 Configure Database and create collections. Start mongodb server from mongodbCompass
 
 3. right click "initialize.ps1" and select run with powershell
+4. Go to ffmpeg/bin folder and install all 3 exe files. Restart the system (Updated from : Aug 31, 2018)
 4. Open cmd in flaskMiddleWareFolder: "flask run"
-5. Open another cmd: go one folder up: "npm start"
 
 
 

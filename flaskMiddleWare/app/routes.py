@@ -42,28 +42,34 @@ def before_request():
             admin = usersCollection.find_one({ 'email': 'admin' })
             if admin is None :
                 usersCollection.insert_one(adminObj)
-        elif not auth.isUserLoggedIn('kibose'):
+        elif not auth.isUserLoggedIn(request.headers['Authorization']):
             raise exceptionHandler.InvalidUsage('Session Timed Out', status_code=420)
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
+        #  file = request.files['file']
+        #     if file and allowed_file(file.filename):
+        #         filename = secure_filename(file.filename)
+        #         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        #         ## snippet to read code below
+        #         file.stream.seek(0) # seek to the beginning of file
+        #         myfile = file.file # will point to tempfile itself
+        #         dataframe = pd.read_csv(myfile)
+        #         ## end snippet
+        user = auth.getLoggedInUser(request.headers['Authorization'])
         # check if the post request has the file part
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
         file = request.files['file']
-        username = request.form['username']
-        usertype = request.form['usertype']
         # if user does not select file, browser also
         # submit an empty part without filename
         if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
+            flash('No file part')
+            return exceptionHandler.InvalidUsage('Invalid Recording', status_code=420)
         if file and allowed_file(file.filename) and not mongo.existInDatabase(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            response = mongo.pushToDatabase(filename, username, usertype)
+            response = mongo.pushToDatabase(filename, user['email'], user['permission'])
             return mongo.prepareResponse(response)
     return '''
     <!doctype html>

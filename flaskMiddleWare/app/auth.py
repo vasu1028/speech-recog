@@ -87,4 +87,12 @@ def isUserLoggedIn(token):
         tokensCollection.update_one(oldValue, newvalue)
         return True
     return False
+
+
+def getLoggedInUser(token):
+    loggedInUser = tokensCollection.find_one({'token': token})
+    if loggedInUser is not None:
+        user = usersCollection.find_one({"email": loggedInUser['email']})
+        return user
+    return None
     

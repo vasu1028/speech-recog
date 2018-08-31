@@ -34,11 +34,18 @@ from pydub import AudioSegment
 # [END import_libraries]
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./d-speech-ca90ae9026ea.json"
 
+FFMPEG_PATH = os.path.abspath(os.path.join('./ffmpeg/bin/ffmpeg.exe'))
+FFPROBE = os.path.abspath(os.path.join('./ffmpeg/bin/ffprobe.exe'))
+AudioSegment.converter = FFMPEG_PATH
+AudioSegment.ffmpeg = FFMPEG_PATH
+AudioSegment.ffprobe = FFPROBE
+
+
 # [START def_transcribe_file]
 def transcribe_file(speech_file):
     """Convert given audio file to single channel."""
     monoFileName = speech_file.split('.')[0] + '__mono.wav'
-    sound = AudioSegment.from_wav(speech_file)
+    sound = AudioSegment.from_file(speech_file)
     sound = sound.set_channels(1)
     duration_in_milliseconds = len(sound)
     sound.export(monoFileName, format='wav')
