@@ -14,8 +14,8 @@ def prepareResponse(data):
     res = { 'result': data }
     return json_util.dumps(res)
 
-def retrieve(username):
-    data = routes.recordingsCollection.find({"$or": [{"user": username}, {"user": "systemuser"}]})
+def retrieve(email):
+    data = routes.recordingsCollection.find({"$or": [{"user": email}, {"permission": "guest"}]})
     if routes.recordingsCollection.count() == 0:
         data = "no data"
     return prepareResponse(data)

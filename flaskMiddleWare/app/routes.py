@@ -120,8 +120,8 @@ def getFileData():
 
 @app.route('/getUserAudioFiles', methods=['GET', 'POST'])
 def getUserAudioFiles():
-    username = request.form['username']
-    return mongo.retrieve(username)
+    user = auth.getLoggedInUser(request.headers['Authorization'])
+    return mongo.retrieve(user['email'])
 
 @app.route('/getDemoUserAudioFiles', methods=['GET', 'POST'])
 def getDemoUserAudioFiles():
@@ -129,6 +129,6 @@ def getDemoUserAudioFiles():
 
 @app.route('/getMyUserAudioFiles', methods=['GET', 'POST'])
 def getMyUserAudioFiles():
-    email = request.form['email']
-    return retrieveData.retrieveMyRecordings(email)
+    user = auth.getLoggedInUser(request.headers['Authorization'])
+    return retrieveData.retrieveMyRecordings(user['email'])
 
