@@ -129,6 +129,6 @@ def getDemoUserAudioFiles():
 
 @app.route('/getMyUserAudioFiles', methods=['GET', 'POST'])
 def getMyUserAudioFiles():
-    username = request.form['username']
-    return retrieveData.retrieveMyRecordings(username)
+    email = request.form['email']
+    return retrieveData.retrieveMyRecordings(email)
 

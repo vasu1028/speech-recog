@@ -14,8 +14,8 @@ def prepareResponse(data):
     res = { 'result': data }
     return json_util.dumps(res)
 
-def retrieveMyRecordings(username):
-    data = routes.recordingsCollection.find({"user": username})
+def retrieveMyRecordings(email):
+    data = routes.recordingsCollection.find({"email": email})
     if routes.recordingsCollection.count() == 0:
         data = "no data"
     return prepareResponse(data)
