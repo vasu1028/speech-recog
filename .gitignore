@@ -9,5 +9,5 @@ flaskMiddleWare/.vscode/settings.json
 *.pyc
 *.pyc
 *.wav
-__pycache__/*
+flaskMiddleWare/app/__pycache__/*
 */venv/*
