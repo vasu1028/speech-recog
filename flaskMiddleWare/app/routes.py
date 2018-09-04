@@ -114,13 +114,14 @@ def getData(fileName):
 @app.route('/getFileData', methods=['GET', 'POST'])
 def getFileData():
     data = []
-    fileData1 = getData(request.form['fileName1'])
-    fileData2 = getData(request.form['fileName2'])
+    fileData1 = getData(request.json['fileName1'])
+    fileData2 = getData(request.json['fileName2'])
     return json_util.dumps({'fileData1':fileData1, 'fileData2':fileData2})
 
 @app.route('/getUserAudioFiles', methods=['GET', 'POST'])
 def getUserAudioFiles():
     user = auth.getLoggedInUser(request.headers['Authorization'])
+    print(user['email'])
     return mongo.retrieve(user['email'])
 
 @app.route('/getDemoUserAudioFiles', methods=['GET', 'POST'])
