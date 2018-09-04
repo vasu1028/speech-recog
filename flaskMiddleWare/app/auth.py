@@ -27,7 +27,7 @@ def login():
             tokensCollection.insert({
                 'token': token,
                 'email': request.json['email'],
-                'expiry': datetime.now()
+                'expiry': (datetime.now() + timedelta(hours=1)).strftime("%Y-%m-%dT%H:%M:%S.000Z")
             })
             response = { 'email': login_user['email'], 'firstName': login_user['firstName'], 'token': token, 'permission': login_user['permission'] }
             return mongo.prepareResponse(response)
@@ -59,7 +59,7 @@ def register():
             raise exceptionHandler.InvalidUsage('User already exists', status_code=420)
 
 
-@app.route('/users', methods=['GET'])
+@app.route('/getAllUsers', methods=['GET'])
 def users():
     if request.method == 'GET':
         existing_users = usersCollection.find({'permission' : 'guest'}, {'password': 0})
@@ -76,17 +76,14 @@ if __name__ == 'app.auth':
 def isUserLoggedIn(token):
     now = datetime.now().strftime("%Y-%m-%dT%H:%M:%S.000Z")
     ceil = (datetime.now() + timedelta(hours=1)).strftime("%Y-%m-%dT%H:%M:%S.000Z")
-    oldValue = { "expiry": { "$lte": datetime.strptime(now, "%Y-%m-%dT%H:%M:%S.000Z") } }
-    newvalue = { "$set": { "expiry": datetime.strptime(ceil, "%Y-%m-%dT%H:%M:%S.000Z") } }
-    allUsers = usersCollection.find(oldValue)
-    for item in allUsers:
-        print(item)
-    usersCollection.delete_many(oldValue)
+    oldValue = { "expiry": { "$lte": now } }
+    newvalue = { "$set": { "expiry": ceil } }
+    tokensCollection.delete_many(oldValue)
     loggedInUser = tokensCollection.find_one({'token': token})
     if loggedInUser is not None:
         tokensCollection.update_one(oldValue, newvalue)
         return True
-    return False
+    return None
 
 
 def getLoggedInUser(token):

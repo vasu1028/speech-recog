@@ -35,15 +35,16 @@ def catch_all(path):
 @app.before_request
 def before_request():
     if request.method != 'OPTIONS':
-        print(g)
-        if 'email' in session:
-            g.email = session['email']
-        if request.endpoint == 'login' or request.endpoint == 'register' or auth.isUserLoggedIn(request.headers['Authorization']):
+        if request.endpoint == 'login' or request.endpoint == 'register':
             admin = usersCollection.find_one({ 'email': 'admin' })
             if admin is None :
                 usersCollection.insert_one(adminObj)
-        elif not auth.isUserLoggedIn(request.headers['Authorization']):
+        elif 'Authorization' not in request.headers:
+            raise exceptionHandler.InvalidUsage('Un Authorized User', status_code=420)
+        if 'Authorization' in request.headers and auth.isUserLoggedIn(request.headers['Authorization']) is None:
             raise exceptionHandler.InvalidUsage('Session Timed Out', status_code=420)
+    else:
+        return ''
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():

@@ -15,7 +15,7 @@ def prepareResponse(data):
     return json_util.dumps(res)
 
 def retrieve(email):
-    data = routes.recordingsCollection.find({"$or": [{"email": email}, {"permission": "administrator"}]})
+    data = routes.recordingsCollection.find({"$or": [{"user": email}, {"permission": "guest"}]})
     if routes.recordingsCollection.count() == 0:
         data = "no data"
     return prepareResponse(data)
@@ -55,7 +55,7 @@ def pushToDatabase(fileName, email, userPermission):
         'time': datetime.now().strftime("%H:%M:%S"),
         'ISOdate': datetime.strptime(dateTime, "%Y-%m-%dT%H:%M:%S.000Z"),
         'type': 'audio/wav',
-        'user': email,
+        'user': routes.usersCollection.find_one({'email': email}),
         'permission': userPermission
     }
     newCollectionId = routes.recordingsCollection.insert_one(obj)
