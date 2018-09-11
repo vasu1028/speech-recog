@@ -35,11 +35,13 @@ def pushToDatabase(fileName, email, userPermission):
     # response = transcribe.transcribe_file(absolutePath)
     # duration = response[0]
     # text = response[1]
-
     # temp
     duration = 10
     text = 'test test'
     # temp
+
+    # uses ffmpeg to encode and save audio files to proper wave format
+    transcribe.encodeAndSaveWAVFile(absolutePath)
 
     monoFilePath = fileName.split('.')[0] + '__mono.wav'
     monoAbsolutePath = os.path.abspath(os.path.join(app.config['UPLOAD_FOLDER'], monoFilePath))

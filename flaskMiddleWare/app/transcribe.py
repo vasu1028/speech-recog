@@ -105,3 +105,8 @@ def transcribe_gcs(gcs_uri):
 # [END def_transcribe_gcs]
 
 
+def encodeAndSaveWAVFile(speech_file):
+    stereoFilePath = speech_file.split('.')[0] + '.wav'
+    sound = AudioSegment.from_file(speech_file)
+    sound = sound.set_channels(1)
+    sound.export(stereoFilePath, format='wav')

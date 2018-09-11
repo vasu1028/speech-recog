@@ -99,7 +99,26 @@ adminObj = {
 
 def getData(fileName):
     data, rate = soundfile.read(fileName)
-    power = 20*np.log10(np.abs(np.fft.rfft(data[:1024, 1])))
+    # power = np.array([])
+    # frequency = np.array([])
+    # with soundfile.SoundFile(fileName, 'r+') as f:
+    #     while f.tell() < f.frames:
+    #         pos = f.tell()
+    #         data = f.read(1024)
+    #         x = np.array(20*np.log10(np.abs(np.fft.rfft(data))))
+    #         if x.ndim >= 2:
+    #             x = x[:, 0]
+    #         power = np.concatenate([power,x[:, 0]])
+    #         frequency = np.concatenate([frequency, np.abs(np.linspace(0, rate/2.0, len(x)))])
+    #         f.seek(pos)
+    #         f.write(data*2)
+
+    # frequency = np.abs(np.linspace(0, rate/2.0, len(power)))
+    # power = [20*np.log10(np.abs(np.fft.rfft(block))) for block in data]
+    if data.ndim >= 2:
+        power = 20*np.log10(np.abs(np.fft.rfft(data[:, 0])))
+    else:
+        power = 20*np.log10(np.abs(np.fft.rfft(data[:])))
     frequency = np.abs(np.linspace(0, rate/2.0, len(power)))
     xValues = frequency.tolist()
     yValues = power.tolist()
@@ -109,7 +128,6 @@ def getData(fileName):
         coordinate = {'x': xValues[index], 'y': yValues[index]}
         coordinates.append(coordinate)
 
-    print(coordinates)
     return coordinates
 
 @app.route('/getFileData', methods=['GET', 'POST'])
