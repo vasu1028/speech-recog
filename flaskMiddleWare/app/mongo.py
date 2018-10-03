@@ -31,13 +31,14 @@ def pushToDatabase(fileName, email, userPermission):
     absolutePath = os.path.abspath(os.path.join(app.config['UPLOAD_FOLDER'], fileName))
 
     # Remove Commenting of the below lines once google cloud api is up and running
-    # and remove lines 39 & 40 (duration and text)
-    # response = transcribe.transcribe_file(absolutePath)
-    # duration = response[0]
-    # text = response[1]
+    # and remove lines temp (duration and text)
+    response = transcribe.transcribe_file(absolutePath)
+    duration = response[0]
+    text = response[1]
+
     # temp
-    duration = 10
-    text = 'test test'
+    # duration = 10
+    # text = 'test test'
     # temp
 
     # uses ffmpeg to encode and save audio files to proper wave format
@@ -52,6 +53,8 @@ def pushToDatabase(fileName, email, userPermission):
         'monoFilePath': monoAbsolutePath,
         'duration_milliseconds': duration,
         'text': text,
+        'wordCount': len(text.split()),
+        'speed': getSpeed(duration, text),
         'timeStamp': datetime.now().strftime("%Y%m%d-%H%M%S"),
         'date': datetime.now().strftime("%d/%m/%Y"),
         'time': datetime.now().strftime("%H:%M:%S"),
@@ -71,3 +74,18 @@ def existInDatabase(fileName):
 # if __name__ == 'app.auth':
 #     app.secret_key = 'speechSecret'
 #     app.run(debug=True)
+
+def getSpeed(durationInMs, text):
+    wordCount = len(text.split())
+    return round((wordCount/(durationInMs/1000))*60)
+
+
+@app.route('/metaData', methods=['GET'])
+def getMetaData():
+    userRecordings = routes.recordingsCollection.find({'permission': 'guest'})
+    sampleRecordings = routes.recordingsCollection.find({'permission': 'administrator'})
+    metaData = {
+        'userRecordings': userRecordings,
+        'sampleRecordings': sampleRecordings
+    }
+    return prepareResponse(metaData)

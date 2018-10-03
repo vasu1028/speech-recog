@@ -32,7 +32,7 @@ from pydub import AudioSegment
 
 
 # [END import_libraries]
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./d-speech-ca90ae9026ea.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./valiant-sandbox-218317-79c90d68c7aa.json"
 
 FFMPEG_PATH = os.path.abspath(os.path.join('./ffmpeg/bin/ffmpeg.exe'))
 FFPROBE = os.path.abspath(os.path.join('./ffmpeg/bin/ffprobe.exe'))
@@ -47,6 +47,7 @@ def transcribe_file(speech_file):
     monoFileName = speech_file.split('.')[0] + '__mono.wav'
     sound = AudioSegment.from_file(speech_file)
     sound = sound.set_channels(1)
+    sound = sound.set_sample_width(2)
     duration_in_milliseconds = len(sound)
     sound.export(monoFileName, format='wav')
     
