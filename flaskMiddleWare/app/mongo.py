@@ -68,6 +68,6 @@ def existInDatabase(fileName):
     data = routes.recordingsCollection.find({'fileName': fileName})
     return data and data.count() > 0
 
-if __name__ == 'app.auth':
-    app.secret_key = 'speechSecret'
-    app.run(debug=True)
+# if __name__ == 'app.auth':
+#     app.secret_key = 'speechSecret'
+#     app.run(debug=True)

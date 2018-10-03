@@ -7,6 +7,8 @@ pip install --upgrade google-cloud-speech
 pip install flask-cors
 pip install soundfile
 pip install numpy
+pip install flask-socketio
+pip install eventlet
 
 set FLASK_APP=flaskMiddleWare.py
 set FLASK_DEBUG=true

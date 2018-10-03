@@ -11,6 +11,12 @@ import bcrypt
 import numpy as np
 import soundfile
 from flask_cors import CORS, cross_origin
+from flask_socketio import SocketIO
+socketio = SocketIO(app)
+
+# if (__name__ == "app.routes"):
+#     socketio.run(app)
+
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
@@ -127,6 +133,7 @@ def getData(fileName):
     for index in range(0, len(power.tolist())):
         coordinate = {'x': xValues[index], 'y': yValues[index]}
         coordinates.append(coordinate)
+        socketio.emit('')
 
     return coordinates
 
@@ -152,3 +159,20 @@ def getMyUserAudioFiles():
     user = auth.getLoggedInUser(request.headers['Authorization'])
     return retrieveData.retrieveMyRecordings(user['email'])
 
+
+@socketio.on('graph')
+def handle_graph(json):
+    print('received json: ' + str(json))
+
+
+@socketio.on('clientConnected')
+def handle_connection(json):
+    print('received json: ' + str(json))
+
+@socketio.on('connect')
+def test_connect():
+    print('Client Connected')
+
+@socketio.on('disconnect')
+def test_disconnect():
+    print('Client disconnected')

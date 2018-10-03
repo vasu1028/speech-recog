@@ -69,9 +69,9 @@ def users():
             raise exceptionHandler.InvalidUsage('No Users', status_code=420)
 
 
-if __name__ == 'app.auth':
-    app.secret_key = 'speechSecret'
-    app.run(debug=True)
+# if __name__ == 'app.auth':
+#     app.secret_key = 'speechSecret'
+#     app.run(debug=True)
 
 def isUserLoggedIn(token):
     now = datetime.now().strftime("%Y-%m-%dT%H:%M:%S.000Z")
