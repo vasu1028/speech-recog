@@ -22,7 +22,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 client = MongoClient()
 folderName = 'uploads'
-UPLOAD_FOLDER = './' + folderName
+UPLOAD_FOLDER = 'C:/FI_2018/d-speech/src/assets/' + folderName
 ALLOWED_EXTENSIONS = set(['wav'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 db = client.speechDatabase
