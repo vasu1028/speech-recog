@@ -29,7 +29,11 @@ from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
 from pydub import AudioSegment
-
+from scipy.io import wavfile
+from matplotlib import pyplot as plt
+import numpy as np
+from threading import Thread
+from app import threads
 
 # [END import_libraries]
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./valiant-sandbox-218317-79c90d68c7aa.json"
@@ -111,3 +115,6 @@ def encodeAndSaveWAVFile(speech_file):
     sound = AudioSegment.from_file(speech_file)
     sound = sound.set_channels(1)
     sound.export(stereoFilePath, format='wav')
+    newThread = threads.GraphPlotterThread(speech_file)
+    newThread.setName('plotter')
+    newThread.run()

@@ -1,4 +1,4 @@
-from app import app, routes, transcribe
+from app import app, routes, transcribe, threads, auth
 import os
 from flask import Flask, flash, request, redirect, url_for, abort, jsonify
 from werkzeug.utils import secure_filename
@@ -10,25 +10,30 @@ from datetime import datetime
 # Mongo DB connection functions
 # ********************************************
 
+
 def prepareResponse(data):
-    res = { 'result': data }
+    res = {'result': data}
     return json_util.dumps(res)
+
 
 def retrieve(email):
     data = routes.recordingsCollection.find()
     if routes.recordingsCollection.count() == 0:
         data = "no data"
     return prepareResponse(data)
-    
+
 
 @app.route('/insert', methods=['POST'])
 def insert():
-   newCollectionId = routes.recordingsCollection.insert_one(request.json)
-   newData = routes.recordingsCollection.find_one({'_id': newCollectionId.inserted_id})
-   return prepareResponse(newData)
+    newCollectionId = routes.recordingsCollection.insert_one(request.json)
+    newData = routes.recordingsCollection.find_one(
+        {'_id': newCollectionId.inserted_id})
+    return prepareResponse(newData)
+
 
 def pushToDatabase(fileName, email, userPermission):
-    absolutePath = os.path.abspath(os.path.join(app.config['UPLOAD_FOLDER'], fileName))
+    absolutePath = os.path.abspath(os.path.join(
+        app.config['UPLOAD_FOLDER'], fileName))
 
     # Remove Commenting of the below lines once google cloud api is up and running
     # and remove lines temp (duration and text)
@@ -45,12 +50,15 @@ def pushToDatabase(fileName, email, userPermission):
     transcribe.encodeAndSaveWAVFile(absolutePath)
 
     monoFilePath = fileName.split('.')[0] + '__mono.wav'
-    monoAbsolutePath = os.path.abspath(os.path.join(app.config['UPLOAD_FOLDER'], monoFilePath))
+    graphPath = fileName.split('.')[0] + '_plot.png'
+    monoAbsolutePath = os.path.abspath(os.path.join(
+        app.config['UPLOAD_FOLDER'], monoFilePath))
     dateTime = datetime.now().strftime("%Y-%m-%dT%H:%M:%S.000Z")
     obj = {
         'fileName': fileName,
         'stereoFilePath': absolutePath,
         'monoFilePath': monoAbsolutePath,
+        'graphPath': graphPath,
         'duration_milliseconds': duration,
         'text': text,
         'wordCount': len(text.split()),
@@ -64,8 +72,10 @@ def pushToDatabase(fileName, email, userPermission):
         'permission': userPermission
     }
     newCollectionId = routes.recordingsCollection.insert_one(obj)
-    newData = routes.recordingsCollection.find_one({'_id': newCollectionId.inserted_id})
+    newData = routes.recordingsCollection.find_one(
+        {'_id': newCollectionId.inserted_id})
     return prepareResponse(newData)
+
 
 def existInDatabase(fileName):
     data = routes.recordingsCollection.find({'fileName': fileName})
@@ -75,6 +85,7 @@ def existInDatabase(fileName):
 #     app.secret_key = 'speechSecret'
 #     app.run(debug=True)
 
+
 def getSpeed(durationInMs, text):
     wordCount = len(text.split())
     return round((wordCount/(durationInMs/1000))*60)
@@ -82,10 +93,38 @@ def getSpeed(durationInMs, text):
 
 @app.route('/metaData', methods=['GET'])
 def getMetaData():
-    userRecordings = routes.recordingsCollection.find({'permission': 'guest'})
-    sampleRecordings = routes.recordingsCollection.find({'permission': 'administrator'})
+    user = auth.getLoggedInUser(request.headers['Authorization'])
+    userRecordings = routes.recordingsCollection.find({'user': user})
+    sampleRecordings = routes.recordingsCollection.find(
+        {'permission': 'administrator'})
     metaData = {
         'userRecordings': userRecordings,
         'sampleRecordings': sampleRecordings
     }
     return prepareResponse(metaData)
+
+
+def compareSpeechFiles(fileName1, fileName2):
+    record1 = routes.recordingsCollection.find_one(
+        {'stereoFilePath': fileName1})
+    record2 = routes.recordingsCollection.find_one(
+        {'stereoFilePath': fileName2})
+    found = routes.comparisonCollection.find_one({'file1': record1['_id'],'file2': record2['_id']})
+    if found:
+        return found
+    else:
+        compareThread = threads.CompareGraphGenerator(record1, record2)
+        compareThread.setName('comparing')
+        compareThread.run()
+        targetPath = (fileName1.split(
+            '.')[0] + '+' + record2['fileName']).split('.')[0] + '.png'
+        collection = routes.comparisonCollection
+        newItem = collection.insert_one({
+            'graphPath': targetPath,
+            'file1': record1['_id'],
+            'file2': record2['_id'],
+            'userText': record1['text'],
+            'sampleText': record2['text']
+        })
+        # compareThread.join()
+        return newItem

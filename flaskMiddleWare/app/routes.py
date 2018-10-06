@@ -27,6 +27,7 @@ ALLOWED_EXTENSIONS = set(['wav'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 db = client.speechDatabase
 recordingsCollection = db.recordings
+comparisonCollection = db.comparisons
 usersCollection = db.users
 
 def allowed_file(filename):
@@ -103,46 +104,18 @@ adminObj = {
     'permission': 'administrator'
 }
 
-def getData(fileName):
-    data, rate = soundfile.read(fileName)
-    # power = np.array([])
-    # frequency = np.array([])
-    # with soundfile.SoundFile(fileName, 'r+') as f:
-    #     while f.tell() < f.frames:
-    #         pos = f.tell()
-    #         data = f.read(1024)
-    #         x = np.array(20*np.log10(np.abs(np.fft.rfft(data))))
-    #         if x.ndim >= 2:
-    #             x = x[:, 0]
-    #         power = np.concatenate([power,x[:, 0]])
-    #         frequency = np.concatenate([frequency, np.abs(np.linspace(0, rate/2.0, len(x)))])
-    #         f.seek(pos)
-    #         f.write(data*2)
-
-    # frequency = np.abs(np.linspace(0, rate/2.0, len(power)))
-    # power = [20*np.log10(np.abs(np.fft.rfft(block))) for block in data]
-    if data.ndim >= 2:
-        power = 20*np.log10(np.abs(np.fft.rfft(data[:, 0])))
-    else:
-        power = 20*np.log10(np.abs(np.fft.rfft(data[:])))
-    frequency = np.abs(np.linspace(0, rate/2.0, len(power)))
-    xValues = frequency.tolist()
-    yValues = power.tolist()
-
-    coordinates = []
-    for index in range(0, len(power.tolist())):
-        coordinate = {'x': xValues[index], 'y': yValues[index]}
-        coordinates.append(coordinate)
-        socketio.emit('')
-
-    return coordinates
-
 @app.route('/getFileData', methods=['GET', 'POST'])
 def getFileData():
-    data = []
-    fileData1 = getData(request.json['fileName1'])
-    fileData2 = getData(request.json['fileName2'])
-    return json_util.dumps({'fileData1':fileData1, 'fileData2':fileData2})
+    fileName1 = request.json['fileName1']
+    fileName2 = request.json['fileName2']
+    compareObj = mongo.compareSpeechFiles(fileName1, fileName2)
+    fileName = compareObj['graphPath'].split('\\')[-1]
+    return json_util.dumps({
+        'graphAbsolutePath': compareObj['graphPath'],
+        'fileName': fileName,
+        'userText': compareObj['userText'],
+        'sampleText': compareObj['sampleText'],
+        })
 
 @app.route('/getUserAudioFiles', methods=['GET', 'POST'])
 def getUserAudioFiles():

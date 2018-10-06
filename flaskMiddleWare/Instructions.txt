@@ -65,3 +65,8 @@ SETTING UP GOOGLE CLOUD ACCOUNT (Not needed- Just for notes)
 
 
 
+
+
+TO-Do
+1. Loudness calculation
+2. correct power plotting of recordings

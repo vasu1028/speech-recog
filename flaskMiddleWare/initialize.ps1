@@ -9,6 +9,8 @@ pip install soundfile
 pip install numpy
 pip install flask-socketio
 pip install eventlet
+pip install scipy
+pip install matplotlib
 
 set FLASK_APP=flaskMiddleWare.py
 set FLASK_DEBUG=true
