@@ -97,8 +97,7 @@ def getMetaData():
     userRecordings = routes.recordingsCollection.find({'user': user})
     sampleRecordings = routes.recordingsCollection.find(
         {'permission': 'administrator'})
-    latestComparison = routes.comparisonCollection.sort({'_id':-1}).find_one(
-        {'user': user})
+    latestComparison = routes.comparisonCollection.find({'user': user})
     metaData = {
         'userRecordings': userRecordings,
         'sampleRecordings': sampleRecordings,
