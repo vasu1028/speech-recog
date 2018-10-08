@@ -97,9 +97,12 @@ def getMetaData():
     userRecordings = routes.recordingsCollection.find({'user': user})
     sampleRecordings = routes.recordingsCollection.find(
         {'permission': 'administrator'})
+    latestComparison = routes.comparisonCollection.sort({'_id':-1}).find_one(
+        {'user': user})
     metaData = {
         'userRecordings': userRecordings,
-        'sampleRecordings': sampleRecordings
+        'sampleRecordings': sampleRecordings,
+        'latestComparison': latestComparison
     }
     return prepareResponse(metaData)
 
@@ -123,6 +126,7 @@ def compareSpeechFiles(fileName1, fileName2):
             'graphPath': targetPath,
             'file1': record1['_id'],
             'file2': record2['_id'],
+            'user': record2['user'],
             'userText': record1['text'],
             'sampleText': record2['text']
         })
