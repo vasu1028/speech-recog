@@ -19,7 +19,7 @@ def prepareResponse(data):
 def retrieve(email):
     data = routes.recordingsCollection.find()
     if routes.recordingsCollection.count() == 0:
-        data = "no data"
+        data = []
     return prepareResponse(data)
 
 
