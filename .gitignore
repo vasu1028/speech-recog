@@ -11,4 +11,4 @@ flaskMiddleWare/.vscode/settings.json
 *.wav
 flaskMiddleWare/app/__pycache__/*
 */venv/*
-*.json
+flaskMiddleWare/*.json
