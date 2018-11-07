@@ -36,7 +36,7 @@ from threading import Thread
 from app import threads
 
 # [END import_libraries]
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./valiant-sandbox-218317-79c90d68c7aa.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./dSpeechKiran-15c46f3aa5f1.json"
 
 FFMPEG_PATH = os.path.abspath(os.path.join('./ffmpeg/bin/ffmpeg.exe'))
 FFPROBE = os.path.abspath(os.path.join('./ffmpeg/bin/ffprobe.exe'))

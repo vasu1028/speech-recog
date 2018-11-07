@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "dspeechkiran",
+  "private_key_id": "15c46f3aa5f169e9d8c1828a4aeecd1f2bfc0d51",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQClprc3TVgPdlEc\n0Ef1LBWwxtnhRDBYsOR9pLjM5qmb0GTGWZBuNId+XYUfelN1eRQuqr7yRva00GMZ\ne2OrfFlF2RUhe/YB5iGq3RrkeJIVnAxLT7ds2FZ8ZjzSpWh5DmLi5/GL+8Kzo0o0\nz4ymEY4tYa7U1VT0ghbXh5ykoznO3b6WhOu+U7UWX9dt9Kq4A5h9oS+S7/6gR+3N\nCXlU/rrSzGXPxTr1ba+zRafdi6tXmBgl0txSb51tBwf9RnOFIJ0fCb7h4DmCqECa\n8bOj1Ak/HEmdTMWLSGvsZ7dWs874EsPryhY1c84k5qxIV7ojqB8BgMjbe/G82z+O\nwmgqnpWjAgMBAAECggEACHCNByFGqksB6PDnqaMcW8xVz3dU6z/f9FLPI4lg/NJK\nQBzSEftVJ+gF30uxMtv/Xj1OyzM4YI/5bJPvyQ3l0nwz6mfRadlav8TSGO/XqYgw\nzCl8k+wVw/LFiInq37gO67abhOFH0zUvk687YD6musMuUCOqV2bFWSfMoEq8qEBo\n4JwigA2+q4BoC66H2WjYZPs6+ZejbZKmbTqTQe7jOEyjR2xJ1JcE/6iTkKaRRHI5\n8BTBx/wb58EVR8ZRPB9QIJiDnKSUHhSS7Yo9Jj8f2K29D2Cw3dbsKKMy3vZjGnjf\nZ2F5yk+Jn3La5cWuW8zN/uhlIV8BKGZqlv/QQfso4QKBgQDiUiZs6T/kvO82sljs\nbZf0nyjFyH3pA6XBcwjn/VOWNFK4i8UxL3CkOL7aZpxGamulfyfzR8UnwwbkdbTL\naHR3dDLOVODdAtDFlhCqpbSJ+Nn4UQ11oI708k4LrMnbwJhiSFZ0781Q0or7ZsEA\nfVNMHaSPC3DTzRe9eat8SqkP0QKBgQC7X9DgzT0BtKvGXvJ+H26lL4n5VHsNnzv4\n/f+cRGnPCpcmecdcID16mP87xlrQkdJ8Im+UHInOiOFQn0puChOOLNJ6FYgU6oNL\n72YUr5ehozbp8C+nIFUuU+4BrLsZj/TotgPVHfyr3HryFDkZ/JJ7WvmWXvIBYmrg\n97Gynkw/MwKBgBZQv1Ux0oj9UCD2iOoXDEqkfuKxmCinoWpnq1MkmV9QHW/w6Cqn\nYNXwenESeQpAaAjTdt74DqqTAlT4fjEoRYOZw4CwwdNI+cjhuRb6a8jG7scbRtZ4\nVGA2nBdunCC85smaFFxHYNk9SVLsmM8xjEsPCTDJkgBwUozuOEhzHCRhAoGBALRT\nolK3Mt9RYX+oIPgAiBuxhLfP9h1GAhG/YSCjNrFrH8yHprWi0YgLdpewbfYMYOXW\nvktsq7N5SF6u7pK4X9mUiXu0/SIkD/gkjbmaw/NrgI3j+fh9xXywiX5THj2brbfI\ndCfGlEVSC4CutcWsrczJ4So2dfGfJf0cZIfikL7BAoGBAINE/iuCISI4Qab2rmQk\nuQwAbtqNoBz+hwOF+709Jmre93inF90Def1dvpTXccai8p2LGUVKA/zRMcXTrJqg\nM1HPhG2hrZdMBdgEY8+BlTLPGbi3ETjP7LQSWS52FIXwTHPIwrSSnN3xsma2naRP\nAZPn3kfsU3S6KNAg0Z0tiFz5\n-----END PRIVATE KEY-----\n",
+  "client_email": "kiran-460@dspeechkiran.iam.gserviceaccount.com",
+  "client_id": "113805542559542265699",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/kiran-460%40dspeechkiran.iam.gserviceaccount.com"
+}

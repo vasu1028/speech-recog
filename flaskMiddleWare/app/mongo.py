@@ -97,11 +97,11 @@ def getMetaData():
     userRecordings = routes.recordingsCollection.find({'user': user})
     sampleRecordings = routes.recordingsCollection.find(
         {'permission': 'administrator'})
-    latestComparison = routes.comparisonCollection.find({'user': user})
+    # latestComparison = routes.comparisonCollection.find({'user': user})
     metaData = {
         'userRecordings': userRecordings,
         'sampleRecordings': sampleRecordings,
-        'latestComparison': latestComparison
+        # 'latestComparison': latestComparison
     }
     return prepareResponse(metaData)
 
