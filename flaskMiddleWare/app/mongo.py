@@ -5,6 +5,7 @@ from werkzeug.utils import secure_filename
 from pymongo import MongoClient
 from bson import json_util, ObjectId, Binary
 from datetime import datetime
+import numpy as np
 
 # ********************************************
 # Mongo DB connection functions
@@ -94,14 +95,29 @@ def getSpeed(durationInMs, text):
 @app.route('/metaData', methods=['GET'])
 def getMetaData():
     user = auth.getLoggedInUser(request.headers['Authorization'])
-    userRecordings = routes.recordingsCollection.find({'user': user})
-    sampleRecordings = routes.recordingsCollection.find(
-        {'permission': 'administrator'})
-    # latestComparison = routes.comparisonCollection.find({'user': user})
+    obj = {
+            '$lookup':
+                {
+                    'from': 'powerFrequency',
+                    'localField': 'stereoFilePath',
+                    'foreignField': 'stereoFilePath',
+                    'as': 'recordingsWithPowerData'
+                }
+            }
+    userRecordingsWithPower = routes.recordingsCollection.aggregate([obj])
+    uRecords = []
+    sRecords = []
+    for obj in userRecordingsWithPower:
+        if (obj['user'] == user and obj['permission'] == 'guest'):
+            uRecords.append(obj)
+        if (obj['permission'] == 'administrator'):
+            sRecords.append(obj)
+
+    latestComparison = routes.comparisonCollection.find({'user': user})
     metaData = {
-        'userRecordings': userRecordings,
-        'sampleRecordings': sampleRecordings,
-        # 'latestComparison': latestComparison
+        'userRecordings': uRecords,
+        'sampleRecordings': sRecords,
+        'latestComparison': latestComparison
     }
     return prepareResponse(metaData)
 
@@ -111,7 +127,8 @@ def compareSpeechFiles(fileName1, fileName2):
         {'stereoFilePath': fileName1})
     record2 = routes.recordingsCollection.find_one(
         {'stereoFilePath': fileName2})
-    found = routes.comparisonCollection.find_one({'file1': record1['_id'],'file2': record2['_id']})
+    found = routes.comparisonCollection.find_one(
+        {'file1': record1['_id'], 'file2': record2['_id']})
     if found:
         return found
     else:

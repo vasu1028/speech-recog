@@ -10,6 +10,11 @@ from scipy.io import wavfile
 from matplotlib import pyplot as plt
 import numpy as np
 from threading import Thread
+from pymongo import MongoClient
+
+client = MongoClient()
+db = client.speechDatabase
+pfCollection = db.powerFrequency
 
 # [END import_libraries]
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./valiant-sandbox-218317-79c90d68c7aa.json"
@@ -51,6 +56,12 @@ class GraphPlotterThread(Thread):
         # like .pdf, .svg, .eps
         plt.savefig(self.fileName.split('.')[0] + '_plot.png', dpi=100)
         # plt.show()
+        pfCollection.insert_one({
+            'stereoFilePath': self.fileName,
+            'avgPower': np.average(power),
+            'avgFrequency': np.average(frequencies),
+            'sampleRate': samplerate
+        })
 
 
 class CompareGraphGenerator(Thread):
